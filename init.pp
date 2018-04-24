@@ -26,8 +26,9 @@ package { ["oracle-java8-installer", "oracle-java8-set-default", "oracle-java8-u
     require => Exec['java_refresh_apt']
 }
 # include orcid_maven
+$tar_file = "/opt/apache-maven-3.3.9-bin.tar.gz"
 exec {"download_maven33":
-    command => "wget -O $tar_file https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz",
+    command => "/usr/bin/wget -O $tar_file https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz",
     creates => $tar_file,
     require => Package['maven']
 }
@@ -61,7 +62,8 @@ exec {"update_mvn_alternatives":
 # include orcid_base::common_libs
 
 $packagelist = [
-    "python-software-properties"
+    "python-software-properties",
+    "ca-certificates-java"
 ]
 # "libcurl4-openssl-dev",
 # "build-essential",
