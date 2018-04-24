@@ -18,13 +18,17 @@ RUN ln -s /etc/hiera.yaml /etc/puppet/hiera.yaml
 
 RUN puppet module install puppetlabs-stdlib
 
-RUN groupadd -r orcid_tomcat --gid=7006 && useradd -r -g orcid_tomcat --uid=7006 orcid_tomcat
+RUN groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7006 orcid_tomcat
+
+VOLUME ~/git/registry_vagrant/puppet:/opt/orcid-puppet
 
 RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/init.pp
 
 RUN apt-get -y autoremove
 
 USER orcid_tomcat
+
+#WORKDIR /home/orcid_tomcat
 
 RUN whoami && ls -l ~
 

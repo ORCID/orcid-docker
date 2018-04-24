@@ -9,6 +9,11 @@ Follow install instructions at https://docs.docker.com/install/
 * [Get Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg)
 * [Get Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
+## Assumptions
+
+    mkdir ~/git && cd ~/git
+    git clone https://github.com/ORCID/registry_vagrant.git
+
 ## build the base orcid web image
 
     git clone git@github.com:ORCID/orcid-docker.git
@@ -17,8 +22,7 @@ create custom image
 
     docker build \
     -f orcid-docker/Dockerfile \
-    -v ~/git/registry_vagrant/puppet:/opt/orcid-puppet \
-    -t localhost/orcid-web:v1
+    -t localhost/orcid-web:v1 .
 
 ## start web container
 
