@@ -26,11 +26,9 @@ RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/pu
 
 RUN apt-get -y autoremove
 
-USER orcid_tomcat
+#USER orcid_tomcat
 
 #WORKDIR /home/orcid_tomcat
-
-RUN whoami && ls -l ~
 
 #CMD ["python", "~/bin/scripts/deployment/deploy-app.py", "--release"', "$ORCID_RELEASE", "web"]
 

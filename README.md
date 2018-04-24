@@ -20,9 +20,7 @@ Follow install instructions at https://docs.docker.com/install/
 
 create custom image
 
-    docker build \
-    -f orcid-docker/Dockerfile \
-    -t localhost/orcid-web:v1 .
+    docker build --rm --tag localhost/orcid-web:v1 .
 
 ## start web container
 
