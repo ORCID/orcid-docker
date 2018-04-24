@@ -10,7 +10,7 @@ COPY init.pp /opt/
 
 RUN dpkg -i /opt/puppetlabs-release-trusty.deb
 
-RUN apt-get -q -y update && apt-get -q -y install puppet git-core && apt-mark -q hold puppet puppet-common
+RUN apt-get -q -y update && apt-get -q -y install puppet && apt-mark -q hold puppet puppet-common
 
 COPY puppet.conf /etc/puppet/puppet.conf
 

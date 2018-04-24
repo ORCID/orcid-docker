@@ -9,10 +9,16 @@ Follow install instructions at https://docs.docker.com/install/
 * [Get Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg)
 * [Get Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
-## Assumptions
+## assumptions
+
+registry vagrant repository is already available in your workspace
 
     mkdir ~/git && cd ~/git
     git clone https://github.com/ORCID/registry_vagrant.git
+
+orcid database is setup and ready for connections
+
+    psql -u orcid
 
 ## build the base orcid web image
 
