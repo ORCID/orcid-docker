@@ -14,7 +14,11 @@ COPY puppet.conf /etc/puppet/puppet.conf
 
 RUN git clone https://github.com/ORCID/registry_vagrant.git /opt/orcid
 
-RUN puppet apply --environment qa --modulepath /opt/orcid/puppet/modules /opt/init.pp
+RUN ln -s /etc/hiera.yaml /etc/puppet/hiera.yaml
+
+RUN puppet module install puppetlabs-stdlib
+
+RUN puppet apply --environment qa --modulepath /opt/orcid/puppet/modules:/etc/puppet/modules /opt/init.pp
 
 RUN apt-get -y autoremove
 
