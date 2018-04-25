@@ -22,6 +22,8 @@ RUN groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7
 
 VOLUME ~/git/registry_vagrant/puppet:/opt/orcid-puppet
 
+VOLUME 
+
 RUN mkdir /home/orcid_tomcat/git
 
 RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/init.pp
