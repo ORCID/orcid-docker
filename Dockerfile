@@ -22,16 +22,19 @@ RUN groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7
 
 VOLUME ~/git/registry_vagrant/puppet:/opt/orcid-puppet
 
+RUN mkdir /home/orcid_tomcat/git
+
 RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/init.pp
 
 RUN apt-get -y autoremove
 
-#USER orcid_tomcat
-
-#WORKDIR /home/orcid_tomcat
-
+CMD chown -R 7006:7006 /opt/orcid-* /home/orcid_tomcat
 #CMD ["python", "~/bin/scripts/deployment/deploy-app.py", "--release"', "$ORCID_RELEASE", "web"]
 
-#ENTRYPOINT ["~/bin/tomcat/bin/startup.sh"]
+USER orcid_tomcat
+
+WORKDIR /home/orcid_tomcat
+
+CMD ["/bin/sh", "~/bin/tomcat/bin/startup.sh"]
 
 EXPOSE 8080
