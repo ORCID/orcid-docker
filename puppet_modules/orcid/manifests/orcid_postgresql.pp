@@ -4,7 +4,7 @@ Exec {
 # orcid_postgresql
 $version = "9.5"
 $pg_package_name = "postgresql-${version}"
-package {"curl":
+package {"wget":
     ensure => installed
 }
 exec { "pg_install_apt_key":

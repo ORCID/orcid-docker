@@ -32,6 +32,10 @@ build the base java web container
 
 build database skeleton with persistent volume
 
+    docker build -t orcid/pg:v1 f postgresql.Dockerfile .
+
+or with predefined volume
+
     docker volume create orcid_data
     docker build -t orcid/pg -f postgresql.Dockerfile -v orcid_data:/var/lib/postgresql/9.5/main .
 
