@@ -1,4 +1,4 @@
-FROM orcid:puppet
+FROM orcid/puppet
 
 MAINTAINER Jeff P. <jeff@siccr.com>
 
