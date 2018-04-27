@@ -96,30 +96,3 @@ file { [ "$tomcat_home/tomcat/data", "$tomcat_home/tomcat/data/solr"]:
 #     owner   => 'orcid_tomcat',
 #     require => File["$tomcat_home/tomcat"]
 # }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

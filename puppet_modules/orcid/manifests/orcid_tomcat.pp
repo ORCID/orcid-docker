@@ -1,16 +1,22 @@
 Exec {
     path => ["/usr/bin", "/bin", "/usr/sbin", "/sbin", "/usr/local/bin", "/usr/local/sbin"]
 }
+
 # include orcid_tomcat
-$tomcat_home                  = "/home/orcid_tomcat"
-$tomcat_tar_url               = "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.21/bin/"
-$tomcat_tar_basename          = "apache-tomcat-8.0.21"
-$tomcat_tar_file              = "${tomcat_home}/${tomcat_tar_basename}.tar.gz"
+$tomcat_home           = "/home/orcid_tomcat"
+$tomcat_tar_url        = "http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.21/bin/"
+$tomcat_tar_basename   = "apache-tomcat-8.0.21"
+$tomcat_tar_file       = "${tomcat_home}/${tomcat_tar_basename}.tar.gz"
+exec {"create_tomcat_user":
+    onlyif  => "test ! -d $tomcat_home",
+    command => "groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7006 orcid_tomcat"
+}
 file { "$tomcat_home/git":
     ensure  => directory,
     mode    => "0775",
     owner   => orcid_tomcat,
-    group   => orcid_tomcat
+    group   => orcid_tomcat,
+    require => Exec["create_tomcat_user"]
 }
 exec { "download_tomcat_distro":
     onlyif   => "test -d $tomcat_home && test ! -f $tomcat_tar_file",
@@ -43,11 +49,11 @@ file { [ "$tomcat_home/tomcat/data", "$tomcat_home/tomcat/data/solr"]:
     group  => orcid_tomcat,
     require=> File["$tomcat_home/tomcat"]
 }
-file { "/home/orcid_tomcat/tomcat/conf/server.xml":
-    ensure  => file,
-    source  => "puppet:///modules/orcid/tomcat_conf_server.min.xml",
-    mode    => '0755',
-    group   => 'orcid_tomcat',
-    owner   => 'orcid_tomcat',
-    require => File["$tomcat_home/tomcat"]
-}
+# file { "/home/orcid_tomcat/tomcat/conf/server.xml":
+#     ensure  => file,
+#     source  => "puppet:///modules/orcid/tomcat_conf_server.min.xml",
+#     mode    => '0755',
+#     group   => 'orcid_tomcat',
+#     owner   => 'orcid_tomcat',
+#     require => File["$tomcat_home/tomcat"]
+# }
