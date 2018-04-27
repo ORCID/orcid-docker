@@ -10,7 +10,7 @@ package {"wget":
 exec { "pg_install_apt_key":
     onlyif  => "test $(apt-key list | grep postgresql | wc -l) -eq 0",
     command => "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -",
-    require => Package['curl']
+    require => Package['wget']
 }
 file { "/etc/apt/sources.list.d/pgdg.list":
     ensure  => file,
