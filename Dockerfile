@@ -1,20 +1,22 @@
-FROM ubuntu:14.04
+FROM orcid/puppet
 
 MAINTAINER Jeff P. <jeff@siccr.com>
 
-ENV LANG en_US.UTF-8
+ENV LANG en_US.utf8
 
-RUN echo 'export LC_ALL="$LANG"' >> /etc/environment
+COPY puppet_modules/orcid/manifests/*.pp /opt/
 
-ADD https://apt.puppetlabs.com/puppetlabs-release-trusty.deb /opt/puppetlabs-release-trusty.deb
+COPY puppet_modules/orcid/files/web_start.sh /usr/bin/
 
-RUN dpkg -i /opt/puppetlabs-release-trusty.deb
+RUN chmod +x /usr/bin/web_start.sh
 
-RUN apt-get -q -y update && apt-get -q -y install puppet && apt-mark -q hold puppet puppet-common
+RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_java.pp
 
-COPY puppet_modules/orcid/files/puppet.conf /etc/puppet/puppet.conf
+RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_maven.pp
 
-RUN ln -s /etc/hiera.yaml /etc/puppet/hiera.yaml
-
-RUN puppet module install puppetlabs-stdlib
-
+# RUN groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7006 orcid_tomcat && mkdir /home/orcid_tomcat/git
+# RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_tomcat.pp
+# RUN chown -R 7006:7006 /opt/orcid-* /home/orcid_tomcat
+# VOLUME ["/home/orcid_tomcat/tomcat/logs", "/home/orcid_tomcat/tomcat/conf", "/home/orcid_tomcat/tomcat/data"]
+# EXPOSE 8080
+# CMD ["/bin/sh", "puppet_modules/orcid/files/web_start.sh $ORCID_RELEASE"]
