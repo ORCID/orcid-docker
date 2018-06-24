@@ -33,21 +33,21 @@ package{["$pg_package_name", "postgresql-common", "postgresql-contrib-9.5"]:
     ensure  => installed,
     require => Exec['pg_upgate_ubuntu_packages_db']
 }
-# file { "/etc/postgresql/$version/main/pg_hba.conf":
-#     ensure  => file,
-#     backup  => true,
-#     owner   => 'postgres',
-#     group   => 'postgres',
-#     mode    => '0440',
-#     source  => "puppet:///modules/$hba",
-#     require => Package[$pg_package_name],
-# }
+file { "/etc/postgresql/$version/main/pg_hba.conf":
+    ensure  => file,
+    backup  => true,
+    owner   => 'postgres',
+    group   => 'postgres',
+    mode    => '0440',
+    source  => "puppet:///modules/orcid/pg_hba.conf",
+    require => Package[$pg_package_name],
+}
 # file { "/etc/postgresql/$version/main/postgresql.conf":
 #     ensure  => file,
 #     backup  => true,
 #     owner   => 'postgres',
 #     group   => 'postgres',
 #     mode    => '0440',
-#     source  => "puppet:///modules/$conf",
+#     source  => "puppet:///modules/orcid/postgresql.conf",
 #     require => Package[$pg_package_name],
 # }

@@ -49,11 +49,11 @@ file { [ "$tomcat_home/tomcat/data", "$tomcat_home/tomcat/data/solr"]:
     group  => orcid_tomcat,
     require=> File["$tomcat_home/tomcat"]
 }
-# file { "/home/orcid_tomcat/tomcat/conf/server.xml":
-#     ensure  => file,
-#     source  => "puppet:///modules/orcid/tomcat_conf_server.min.xml",
-#     mode    => '0755',
-#     group   => 'orcid_tomcat',
-#     owner   => 'orcid_tomcat',
-#     require => File["$tomcat_home/tomcat"]
-# }
+file { "/home/orcid_tomcat/tomcat/conf/server.xml":
+    ensure  => file,
+    source  => "puppet:///modules/orcid/tomcat_conf_server.min.xml",
+    mode    => '0755',
+    group   => 'orcid_tomcat',
+    owner   => 'orcid_tomcat',
+    require => File["$tomcat_home/tomcat"]
+}

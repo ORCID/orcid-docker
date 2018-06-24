@@ -2,7 +2,9 @@ FROM ubuntu:14.04
 
 MAINTAINER Jeff P. <jeff@siccr.com>
 
-ENV LANG en_US.utf8
+ENV LANG en_US.UTF-8
+
+RUN echo 'export LC_ALL="$LANG"' >> /etc/environment
 
 ADD https://apt.puppetlabs.com/puppetlabs-release-trusty.deb /opt/puppetlabs-release-trusty.deb
 
