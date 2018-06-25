@@ -1,22 +1,21 @@
-FROM orcid/puppet
+FROM tomcat:8.0-jre8
 
-MAINTAINER Jeff P. <jeff@siccr.com>
+LABEL maintainer="Jeff P. <jeff@siccr.com>"
 
 ENV LANG en_US.utf8
 
-COPY puppet_modules/orcid/manifests/*.pp /opt/
+ENV TOMCAT_HOME /usr/local/tomcat
 
-COPY puppet_modules/orcid/files/web_start.sh /usr/bin/
+RUN mkdir -p $TOMCAT_HOME/data/solr
 
-RUN chmod +x /usr/bin/web_start.sh
+COPY orcid/orcid-web.war $TOMCAT_HOME/webapps/
 
-RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_java.pp
+COPY orcid/server.min.xml $TOMCAT_HOME/conf/server.xml
 
-RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_maven.pp
+COPY orcid/tomcat-users.min.xml $TOMCAT_HOME/conf/tomcat-users.xml
 
-# RUN groupadd -r orcid_tomcat --gid=7006 && useradd -m -r -g orcid_tomcat --uid=7006 orcid_tomcat && mkdir /home/orcid_tomcat/git
-# RUN puppet apply --environment qa --modulepath /opt/orcid-puppet/modules:/etc/puppet/modules /opt/orcid_tomcat.pp
-# RUN chown -R 7006:7006 /opt/orcid-* /home/orcid_tomcat
-# VOLUME ["/home/orcid_tomcat/tomcat/logs", "/home/orcid_tomcat/tomcat/conf", "/home/orcid_tomcat/tomcat/data"]
-# EXPOSE 8080
-# CMD ["/bin/sh", "puppet_modules/orcid/files/web_start.sh $ORCID_RELEASE"]
+COPY orcid/setenv.sh $TOMCAT_HOME/bin/
+
+RUN chmod +x $TOMCAT_HOME/bin/setenv.sh
+
+COPY orcid/orcid.properties $TOMCAT_HOME/conf/
