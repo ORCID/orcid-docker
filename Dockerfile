@@ -1,20 +1,21 @@
-FROM ubuntu:14.04
+FROM tomcat:8.0-jre8
 
-MAINTAINER Jeff P. <jeff@siccr.com>
+LABEL maintainer="Jeff P. <jeff@siccr.com>"
 
-ENV LANG en_US.UTF-8
+ENV LANG en_US.utf8
 
-RUN echo 'export LC_ALL="$LANG"' >> /etc/environment
+ENV TOMCAT_HOME /usr/local/tomcat
 
-ADD https://apt.puppetlabs.com/puppetlabs-release-trusty.deb /opt/puppetlabs-release-trusty.deb
+RUN mkdir -p $TOMCAT_HOME/data/solr
 
-RUN dpkg -i /opt/puppetlabs-release-trusty.deb
+COPY orcid/orcid-web.war $TOMCAT_HOME/webapps/
 
-RUN apt-get -q -y update && apt-get -q -y install puppet && apt-mark -q hold puppet puppet-common
+COPY orcid/server.min.xml $TOMCAT_HOME/conf/server.xml
 
-COPY puppet_modules/orcid/files/puppet.conf /etc/puppet/puppet.conf
+COPY orcid/tomcat-users.min.xml $TOMCAT_HOME/conf/tomcat-users.xml
 
-RUN ln -s /etc/hiera.yaml /etc/puppet/hiera.yaml
+COPY orcid/setenv.sh $TOMCAT_HOME/bin/
 
-RUN puppet module install puppetlabs-stdlib
+RUN chmod +x $TOMCAT_HOME/bin/setenv.sh
 
+COPY orcid/orcid.properties $TOMCAT_HOME/conf/

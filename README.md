@@ -1,4 +1,4 @@
-# orcid-docker
+# Reuse existing containers
 
 docker files to build orcid web app
 
@@ -14,80 +14,44 @@ Follow install instructions at https://docs.docker.com/install/
 registry vagrant repository is already available in your workspace
 
     mkdir ~/git && cd ~/git
-    git clone https://github.com/ORCID/registry_vagrant.git
+    git clone https://github.com/ORCID/orcid-docker.git
     git clone https://github.com/ORCID/ORCID-Source.git
 
-## build the base orcid web image
+## setup ORCID database first time
 
-    git clone git@github.com:ORCID/orcid-docker.git
-
-create the base docker puppet ready image
-
-    cd orcid-docker
-    docker build -t orcid/puppet .
-
-build the base java web container
-
-    docker build -t orcid/web -f web.Dockerfile .
-
-build database skeleton with persistent volume
-
-    docker build -t orcid/pg:v1 f postgresql.Dockerfile .
-
-or with predefined volume
+Reusing [postgres library](https://docs.docker.com/samples/library/postgres/)
 
     docker volume create orcid_data
-    docker build -t orcid/pg:v1 -f postgresql.Dockerfile -v orcid_data:/var/lib/postgresql/9.5/main .
+    docker run --name orcid-postgres --rm -e POSTGRES_PASSWORD=orcid -v `pwd`:/opt/initdb -v orcid_data:/var/lib/postgresql/9.5/main -d postgres:9.5
+    docker exec -it orcid-postgres psql -U postgres -f /opt/initdb/orcid_db.sql
 
-## start web container
+Reusing [tomcat library](https://docs.docker.com/samples/library/tomcat/)
 
-initialize database
+    # not required - just testing tomcat available at http://localhost:8080
+    docker run -it --rm -p 8080:8080 tomcat:8.0-jre8
 
-    docker run --rm -dP -p 5432:5432 \
-    -v orcid_data:/var/lib/postgresql/9.5/main \
-    -u postgres \
-    --name orcid-db \
-    orcid/pg:v1
+Build the base java web container
 
-start up  the web context
+    cd ~/git/ORCID-Source
+    mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
+    cp ~/git/ORCID-Source/orcid-web/target/orcid-web.war ~/git/orcid-docker/orcid/
+    cd ~/git/orcid-docker
 
-    docker run --rm -dP -p 8080:8080 \
-    -v ~/git/ORCID-Source:/home/orcid_tomcat/git/ORCID-Source \
-    -v ~/.m2:/home/orcid_tomcat/.m2 \
-    -e ORCID_RELEASE=release-1.222.4 \
-    -u orcid_tomcat \
-    --name orcid-web \
-    orcid/web
+Ready to build our suctom orcid-web container
 
-> update release-1.222.4 with required release tag from git repo
+    docker build --rm -t orcid/web .
+
+If new container is available at `docker images` then we're ready to run orcid-web
+
+    docker run -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db orcid/web
+
+or with volume
+
+    docker run -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
 
 at this point a orcid-web instance should be available at http://localhost:8080/orcid-web
 
     curl -I -k -L http://localhost:8080/orcid-web
-
-
-confirm
-
-    orcid_tomcat@docker1test:~/git/ORCID-Source$ mvn -Dmaven.test.skip=true -DskipTest clean install
-    [INFO] BUILD SUCCESS
-    [INFO] ------------------------------------------------------------------------
-    [INFO] Total time: 03:19 min
-    [INFO] Finished at: 2018-04-27T15:54:04+00:00
-    [INFO] Final Memory: 265M/1116M
-    [INFO] ------------------------------------------------------------------------
-    orcid_tomcat@docker1test:~/git/ORCID-Source$ find . -name *.war
-    ./orcid-message-listener/target/orcid-message-listener.war
-    ./orcid-api-web/target/orcid-api-web.war
-    ./orcid-integration-test/target/orcid-integration-test-1.1.5-SNAPSHOT.war
-    ./orcid-internal-api/target/orcid-internal-api.war
-    ./orcid-solr-web/target/orcid-solr-web.war
-    ./orcid-scheduler-web/target/orcid-scheduler-web.war
-    ./orcid-pub-web/target/orcid-pub-web.war
-    ./orcid-web/target/orcid-web.war
-    ./orcid-activities-indexer/target/orcid-activities-indexer.war
-    ./orcid-activemq/target/orcid-activemq.war
-
-
 
 
 

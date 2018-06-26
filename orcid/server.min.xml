@@ -17,15 +17,15 @@
                connectionTimeout="20000"
                redirectPort="8443" />
     <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"  scheme="https" 
+    <!--Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"  scheme="https" 
                truststorePass="changeit" 
                keystorePass="changeit" 
                maxThreads="150"
                clientAuth="want" 
                secure="true" 
                sslProtocol="TLS" 
-               keystoreFile="/home/orcid_tomcat/git/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-keystore.jks" 
-               truststoreFile="/home/orcid_tomcat/git/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-truststore.jks"/>
+               keystoreFile="/opt/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-keystore.jks" 
+               truststoreFile="/opt/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-truststore.jks"/-->
     <Engine name="Catalina" defaultHost="localhost">
       <Realm className="org.apache.catalina.realm.LockOutRealm">
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
@@ -36,7 +36,7 @@
                prefix="localhost_access_log"
                suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-        <Context docBase="/home/orcid_tomcat/apache-tomcat-8.0.21/webapps/orcid-web" path="/orcid-web" reloadable="false"/>
+        <Context docBase="/usr/local/tomcat/webapps/orcid-web" path="/orcid-web" reloadable="false"/>
       </Host>
     </Engine>
   </Service>
