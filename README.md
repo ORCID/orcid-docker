@@ -33,6 +33,15 @@ Reusing [tomcat library](https://docs.docker.com/samples/library/tomcat/)
 Build the base java web container
 
     cd ~/git/ORCID-Source
+    echo 'http://localhost:8080/orcid-web/static' > orcid-web/src/main/resources/cdn_active_url.txt
+    mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
+
+Generate NG orcid js
+
+    cd orcid-nodejs
+    mvn -P ci -Dnodejs.workingDirectory=/home/jperez/Templates/ORCID-Source/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean install package
+
+    cd ~/git/ORCID-Source/orcid-web
     mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
     cp ~/git/ORCID-Source/orcid-web/target/orcid-web.war ~/git/orcid-docker/orcid/
     cd ~/git/orcid-docker
@@ -43,11 +52,15 @@ Ready to build our suctom orcid-web container
 
 If new container is available at `docker images` then we're ready to run orcid-web
 
-    docker run -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db orcid/web
+    docker run -d -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db orcid/web
 
 or with volume
 
-    docker run -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
+    docker run -d -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
+
+watch the app startup with
+
+    docker logs -f orcid-web
 
 at this point a orcid-web instance should be available at http://localhost:8080/orcid-web
 

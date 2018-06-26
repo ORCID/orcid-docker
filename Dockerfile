@@ -8,7 +8,7 @@ ENV TOMCAT_HOME /usr/local/tomcat
 
 RUN mkdir -p $TOMCAT_HOME/data/solr
 
-COPY orcid/orcid-web.war $TOMCAT_HOME/webapps/
+COPY orcid/*.war $TOMCAT_HOME/webapps/
 
 COPY orcid/server.min.xml $TOMCAT_HOME/conf/server.xml
 
