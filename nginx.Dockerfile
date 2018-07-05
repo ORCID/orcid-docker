@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 RUN curl -Ls -o /opt/nginx-common.deb https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-common_1.4.6-1ubuntu4_all.deb && \
     dpkg -i /opt/nginx-common.deb
-    
+
 RUN curl -Ls -o /opt/nginx-extras.deb https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-extras_1.4.6-1ubuntu4_amd64.deb && \
     dpkg --force-all -i /opt/nginx-extras.deb
 

@@ -28,7 +28,8 @@ Reusing [postgres library](https://docs.docker.com/samples/library/postgres/)
 Reusing [tomcat library](https://docs.docker.com/samples/library/tomcat/)
 
     # not required - just testing tomcat available at http://localhost:8080
-    docker run -it --rm -p 8080:8080 tomcat:8.0-jre8
+    docker run --name tomcat_test --rm -p 8080:8080 -d tomcat:8.0-jre8
+    docker stop tomcat_test
 
 Build the base java web container
 
