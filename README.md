@@ -2,14 +2,14 @@
 
 docker files to build orcid web app
 
-## install docker community edition
+## Install docker community edition
 
 Follow install instructions at https://docs.docker.com/install/
 
 * [Get Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg)
 * [Get Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
-## assumptions
+## Assumptions
 
 registry vagrant repository is already available in your workspace
 
@@ -17,7 +17,7 @@ registry vagrant repository is already available in your workspace
     git clone https://github.com/ORCID/orcid-docker.git
     git clone https://github.com/ORCID/ORCID-Source.git
 
-## setup ORCID database first time
+## Setup ORCID database first time
 
 Reusing [postgres library](https://docs.docker.com/samples/library/postgres/)
 
@@ -39,7 +39,9 @@ Build the base java web container
 Generate NG orcid js
 
     cd orcid-nodejs
-    mvn -P ci -Dnodejs.workingDirectory=/home/jperez/Templates/ORCID-Source/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean install package
+    mvn -P ci -Dnodejs.workingDirectory=~/git/ORCID-Source/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean install package
+
+Package as war file all together
 
     cd ~/git/ORCID-Source/orcid-web
     mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
