@@ -22,13 +22,15 @@ orcid docker and registry source is already available in your workspace
 Reusing [postgres library](https://docs.docker.com/samples/library/postgres/)
 
     docker volume create orcid_data
-    docker run --name orcid-postgres --rm -e POSTGRES_PASSWORD=orcid -v `pwd`:/opt/initdb -v orcid_data:/var/lib/postgresql/9.5/main -d postgres:9.5
-    docker exec -it orcid-postgres psql -U postgres -f /opt/initdb/orcid_db.sql
+    docker run --name orcid-postgres --rm -e POSTGRES_PASSWORD=orcid -v `pwd`/orcid:/opt/initdb -v orcid_data:/var/lib/postgresql/9.5/main -d postgres:9.5
+    docker exec -it orcid-postgres psql -U postgres -f /opt/initdb/orcid_dump.sql
+
+> Download orcid_dump.sql from any sandbox machine
 
 Reusing [tomcat library](https://docs.docker.com/samples/library/tomcat/)
 
-    # not required - just testing tomcat available at http://localhost:8080
-    docker run --name tomcat_test --rm -p 8080:8080 -d tomcat:8.0-jre8
+    # not required - just testing tomcat available at http://localhost:8888
+    docker run --name tomcat_test --rm -p 8888:8080 -d tomcat:8.0-jre8
     docker stop tomcat_test
 
 Build the base java web container
@@ -47,10 +49,10 @@ Package as war file all together
     cd ~/git/ORCID-Source/orcid-web
     mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
     cp ~/git/ORCID-Source/orcid-web/target/orcid-web.war ~/git/orcid-docker/orcid/
-    cd ~/git/orcid-docker
 
 Ready to build our suctom orcid-web container
 
+    cd ~/git/orcid-docker
     docker build --rm -t orcid/web .
 
 If new container is available at `docker images` then we're ready to run orcid-web
@@ -59,7 +61,7 @@ If new container is available at `docker images` then we're ready to run orcid-w
 
 or with volume
 
-    docker run -d --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
+    docker run -d --name orcid-web --rm --link orcid-postgres:db.orcid.org -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
 
 watch the app startup with
 
@@ -75,7 +77,7 @@ Build shibboleth from source by creating a container with all required libraries
 
 Download all libraries
 
-    docker build --rm -t orcid/shibdev -f shibboleth.Dockerfile .
+    docker build --rm -t orcid/shibdev -f shibboleth/Dockerfile .
 
 Create local persisted disk
 
@@ -87,9 +89,9 @@ Start shibboleth build
 
 Create nginx machine from orcid deb packages
 
-    docker build --rm -t orcid/nginx -f nginx.Dockerfile .
+    docker build --rm -t orcid/nginx -f nginx/Dockerfile .
 
-    docker run --rm -d -p 8080:80 -v shib_disk:/opt/shib_sp orcid/nginx
+    docker run --rm -d -p 8080:80 -v shib_disk:/opt/shib_sp --link orcid-web:dev.orcid.org -e REGISTRY_IP_PORT=dev.orcid.org:8080 orcid/nginx
 
 
 .
