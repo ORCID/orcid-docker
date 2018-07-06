@@ -11,7 +11,7 @@ Follow install instructions at https://docs.docker.com/install/
 
 ## Assumptions
 
-registry vagrant repository is already available in your workspace
+orcid docker and registry source is already available in your workspace
 
     mkdir ~/git && cd ~/git
     git clone https://github.com/ORCID/orcid-docker.git
@@ -55,11 +55,11 @@ Ready to build our suctom orcid-web container
 
 If new container is available at `docker images` then we're ready to run orcid-web
 
-    docker run -d -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db orcid/web
+    docker run -d --name orcid-web --rm --link orcid-postgres:db.orcid.org orcid/web
 
 or with volume
 
-    docker run -d -p 8080:8080 --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
+    docker run -d --name orcid-web --rm --link orcid-postgres:orcid-db -v ~/Templates/ORCID-Source:/opt/ORCID-Source orcid/web
 
 watch the app startup with
 
@@ -68,6 +68,44 @@ watch the app startup with
 at this point a orcid-web instance should be available at http://localhost:8080/orcid-web
 
     curl -I -k -L http://localhost:8080/orcid-web
+
+## Build proxy server
+
+Build shibboleth from source by creating a container with all required libraries
+
+Download all libraries
+
+    docker build --rm -t orcid/shibdev -f shibboleth.Dockerfile .
+
+Create local persisted disk
+
+    docker volume create shib_disk
+
+Start shibboleth build
+
+    docker run --rm -v shib_disk:/opt/shib_sp orcid/shibdev
+
+Create nginx machine from orcid deb packages
+
+    docker build --rm -t orcid/nginx -f nginx.Dockerfile .
+
+    docker run --rm -d -p 8080:80 -v shib_disk:/opt/shib_sp orcid/nginx
+
+
+.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

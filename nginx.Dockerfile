@@ -16,14 +16,13 @@ RUN apt-get update && \
     dh-systemd \
     supervisor
 
-RUN curl -Ls -o /opt/nginx-common.deb https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-common_1.4.6-1ubuntu4_all.deb && \
-    dpkg -i /opt/nginx-common.deb
+ADD https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-common_1.4.6-1ubuntu4_all.deb /opt/
 
-RUN curl -Ls -o /opt/nginx-extras.deb https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-extras_1.4.6-1ubuntu4_amd64.deb && \
-    dpkg --force-all -i /opt/nginx-extras.deb
+RUN dpkg -i /opt/nginx-common_1.4.6-1ubuntu4_all.deb
 
-RUN curl -Ls -o /opt/shibboleth-sp-2.5.4.tar.gz https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/shibboleth-sp-2.5.4.tar.gz && \
-    tar xzvf /opt/shibboleth-sp-2.5.4.tar.gz -C /opt/ 
+ADD https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibboleth_nginx/files/src/nginx-extras_1.4.6-1ubuntu4_amd64.deb /opt/
+
+RUN dpkg --force-all -i /opt/nginx-extras_1.4.6-1ubuntu4_amd64.deb
 
 COPY orcid/site_available_default /etc/nginx/sites-enabled/default
 COPY orcid/etc_nginx/* /etc/nginx/
@@ -33,4 +32,4 @@ RUN chmod +x /usr/bin/orcid_up.sh
 
 EXPOSE 8080 80 443 8443
 
-CMD ["/usr/bin/orcid_up.sh"]
+ENTRYPOINT ["/usr/bin/orcid_up.sh"]

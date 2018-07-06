@@ -4,9 +4,11 @@ LABEL maintainer="Jeff P. <jeff@siccr.com>"
 
 ENV LANG en_US.utf8
 
-ADD https://shibboleth.net/downloads/service-provider/2.5.4/shibboleth-sp-2.5.4.tar.gz /opt/
+ENV SHIB_VER shibboleth-sp-2.5.4
 
-RUN tar xzvf /opt/shibboleth-sp-2.5.4.tar.gz -C /opt/
+ADD https://shibboleth.net/downloads/service-provider/2.5.4/${SHIB_VER}.tar.gz /opt/
+
+RUN tar xzvf /opt/${SHIB_VER}.tar.gz -C /opt/
 
 RUN apt-get update && \
     apt-get install -y liblog4cpp5-dev \
@@ -34,9 +36,6 @@ RUN apt-get update && \
     opensaml2-schemas \
     build-essential
 
-VOLUME ['/opt/shib_sp']
+WORKDIR /opt/${SHIB_VER}/
 
-RUN cd /opt/shibboleth-sp-2.5.4/configure && \
-    ./configure --with-fastcgi --prefix=/opt/shib_sp && \
-    make && \
-    make install
+CMD ./configure --with-fastcgi --prefix=/opt/shib_sp && make && make install
