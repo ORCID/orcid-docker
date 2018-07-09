@@ -1,6 +1,6 @@
 ssl_dhparam          /etc/nginx/dhparam.pem;
-ssl_certificate      /etc/nginx/ssl.crt;
-ssl_certificate_key  /etc/nginx/ssl.key;
+ssl_certificate      /etc/nginx/dev.orcid.org.crt;
+ssl_certificate_key  /etc/nginx/dev.orcid.org.key;
 ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
 ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
 ssl_prefer_server_ciphers on;
@@ -25,14 +25,14 @@ server {
     length_hiding on;
 
     set $do_https_rewrite "T";    # should we redir to https
-    set $isHttps "F"; # asking for https
-    set $isId "F";  # is it an orcid id uri
-    set $isMeta "F"; # is it json or xml request
-    set $isAllowedHttp "F"; # is index page
-    set $isApiSearch "F"; # is api search
-    set $isPubApi "F"; # is the public API
-    set $isMemberApi "F"; # is the memeber API
-    
+    set $isHttps "F";             # asking for https
+    set $isId "F";                # is it an orcid id uri
+    set $isMeta "F";              # is it json or xml request
+    set $isAllowedHttp "F";       # is index page
+    set $isApiSearch "F";         # is api search
+    set $isPubApi "F";            # is the public API
+    set $isMemberApi "F";         # is the memeber API
+
     if ($scheme = https) {
         set $do_https_rewrite "F";
         set $isHttps "T";
@@ -73,12 +73,12 @@ server {
     ########################################
     # end static files
     ########################################
-    
+
 
     ########################################
     # start shibboleth
     ########################################
-    
+
     #FastCGI authorizer for Auth Request module
     location = /shibauthorizer {
         internal;
@@ -98,7 +98,6 @@ server {
             gzip_comp_level 9;
             gzip_types application/json;
             gzip_proxied any;
-            fastcgi_cache shib_zone;
             fastcgi_cache_valid 200 60m;
             fastcgi_param SERVER_PORT 443;
             include fastcgi_params;
@@ -128,13 +127,13 @@ server {
         if ($do_https_rewrite = "T") {
             return 301 https://$server_name$request_uri;
         }
-        
+
         #Add your attributes here. They get introduced as headers
         #by the FastCGI authorizer so we must prevent spoofing.
         more_clear_input_headers 'Affiliation' 'Entitlement' 'Shib-Application-Id' 'Shib-Authentication-Instant' 'Shib-Authentication-Method' 'Shib-Authncontext-Class' 'Shib-Identity-Provider' 'Shib-Session-Id' 'Shib-Session-Index' 'Unscoped-Affiliation' 'Remote-User' 'REMOTE_USER' 'Auth-Type' 'AUTH_TYPE' 'eppn' 'persistent-id' 'targeted-id' 'targeted-id-oid' 'edu-person-unique-id' 'sn' 'givenName' 'displayName' 'mail';
         shib_request /shibauthorizer;
         shib_request_use_headers on;
-        
+
         proxy_read_timeout 120;
         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header    X-Real-IP       $remote_addr;
@@ -155,7 +154,7 @@ server {
         proxy_cookie_path /orcid-web /;
 
         proxy_pass http://REGISTRY_IP_PORT/orcid-web$request_uri;
-        
+
         proxy_redirect http://$host/orcid-web/ http://$host/;
         proxy_redirect https://$host/orcid-web/ https://$host/; 
     }
@@ -185,12 +184,12 @@ server {
     if ($uri ~* "^/(tomcatUp|webStatus)\.json$") {
        set $do_https_rewrite "F";
     }
-    
+
     if ($uri ~* "/pubStatus$") {
         set $isPubApi "T";
         set $do_https_rewrite "F";
     }
-    
+
     if ($uri ~* "/apiStatus$") {
         set $isMemberApi "T";
         set $do_https_rewrite "F";
@@ -199,15 +198,15 @@ server {
     if ($uri ~* "^/public/.*$") {
        set $do_https_rewrite "F";
     }
-	
+
     # if it's a public orcid id request
     if ( $uri ~ ^/(experimental_rdf_[^\/]*/)?\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d(\d|X).*$) {
         set $isId "T";
         set $do_https_rewrite "F";
     }
 
-   # if it's a UI json request don't go to the pub api, even if contains orcid.
-   if ( $uri ~* ".json($|\?.*$)") {
+    # if it's a UI json request don't go to the pub api, even if contains orcid.
+    if ( $uri ~* ".json($|\?.*$)") {
         set $isId "F";
     }
 
@@ -240,18 +239,17 @@ server {
         if ($isPubApi = "T") {
             set $app_path "/orcid-pub-web";
         }
-        
+
         if ($isMemberApi = "T") {
             set $app_path "/orcid-api-web";
         }
-    
+
         # everything else is https
         if ($do_https_rewrite = "T") {
             return 301 https://$server_name$request_uri;
         }
-        
+
         client_max_body_size 200m;
-        limit_req   zone=web  burst=40;
 
         proxy_read_timeout 120;
         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -264,7 +262,7 @@ server {
            set $proto 'https';
         }
         proxy_set_header X-Forwarded-Proto $proto;
-        
+
         proxy_set_header Host $http_host;
 
         # Tomcat has no trailing slash after the cookie path (by default) from version 8.0.37 onwards
@@ -277,13 +275,13 @@ server {
         if ( $isApiSearch = "T" ) {
            set $app_path "/orcid-pub-web";
         }
-                
-        set $proxHeader "${http_host}";   
+
+        set $proxHeader "${http_host}";
         proxy_pass http://REGISTRY_IP_PORT$app_path$request_uri;
-        
+
         proxy_redirect http://$host/orcid-web/ http://$host/;
         proxy_redirect https://$host/orcid-web/ https://$host/; 
-        
+
     }
 
     location /oauth/signin {

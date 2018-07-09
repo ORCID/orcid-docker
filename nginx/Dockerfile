@@ -24,8 +24,6 @@ ADD https://github.com/ORCID/registry_vagrant/raw/master/puppet/modules/shibbole
 
 RUN dpkg --force-all -i /opt/nginx-extras_1.4.6-1ubuntu4_amd64.deb
 
-COPY orcid/site_available_default /etc/nginx/sites-enabled/default
-COPY orcid/etc_nginx/* /etc/nginx/
 COPY orcid/configure_and_serve.sh /usr/bin/orcid_up.sh
 
 RUN chmod +x /usr/bin/orcid_up.sh
