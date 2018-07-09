@@ -16,6 +16,6 @@ COPY orcid/tomcat-users.min.xml $TOMCAT_HOME/conf/tomcat-users.xml
 
 COPY orcid/setenv.sh $TOMCAT_HOME/bin/
 
-RUN chmod +x $TOMCAT_HOME/bin/setenv.sh
-
 COPY orcid/orcid.properties $TOMCAT_HOME/conf/
+
+RUN chmod +x $TOMCAT_HOME/bin/setenv.sh
