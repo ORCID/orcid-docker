@@ -96,6 +96,22 @@ Create nginx machine from orcid deb packages
 
 ## Test web app
 
-At this point a orcid-web instance should be available at http://localhost:8080/orcid-web
+At this point a orcid-web instance should be available at http://localhost:8080/orcid-web and your docker catalog looks like next
+
+    jperez@asusxubuntu:~/Templates/orcid-docker$ docker images
+    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+    orcid/web           latest              2dfef66a9673        3 days ago          647MB
+    orcid/nginx         latest              8416110096d7        3 days ago          495MB
+    orcid/shibdev       latest              b2791b28e2e3        3 days ago          880MB
+    nz/orcidhub         latest              b367d3e1b89e        13 days ago         445MB
+    redis               latest              55cb7014c24f        2 weeks ago         83.4MB
+    tomcat              8.0-jre8            4227b4397b18        4 weeks ago         467MB
+    postgres            9.5                 71135c0ff9e7        4 weeks ago         234MB
+    postgres            10.4                65bf726222e1        4 weeks ago         236MB
+    ubuntu              14.04               578c3e61a98c        4 weeks ago         223MB
+    centos              centos7             49f7960eb7e4        5 weeks ago         200MB
+    jperez@asusxubuntu:~/Templates/orcid-docker$
+
+Test the service with
 
     curl -I -k -L -H 'Host: dev.orcid.org' http://localhost:8080/orcid-web
