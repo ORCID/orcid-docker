@@ -1,3 +1,4 @@
 orcid/*.sql
 orcid/*.war
 orcid/*.jar
+.env

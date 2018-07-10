@@ -115,3 +115,25 @@ At this point a orcid-web instance should be available at http://localhost:8080/
 Test the service with
 
     curl -I -k -L -H 'Host: dev.orcid.org' http://localhost:8080/orcid-web
+
+You can login with
+
+* admin@test.orcid.org
+* user_2@test.orcid.org
+* user_1@test.orcid.org
+* limited@test.orcid.org
+
+## Control orcid-web with docker compose
+
+First ensure values in _.env_ files is correct, adjust when needed
+
+    cat .env
+
+To start all services from the root folder do:
+
+    docker-compose up -d
+
+We can found containers IP from container name with
+
+    docker inspect --format '{{ (index .NetworkSettings.Networks "orcid_default").IPAddress }}' orcid_web_1
+
