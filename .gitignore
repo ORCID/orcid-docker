@@ -1,4 +1,4 @@
-orcid/*.sql
-orcid/*.war
-orcid/*.jar
 .env
+.git
+tmp/
+
