@@ -29,9 +29,9 @@ orcid docker and registry source is already available in your workspace
 Reusing [postgres library](https://docs.docker.com/samples/library/postgres/)
 
     docker volume create orcid_data
-    docker run --name orcid-postgres -e POSTGRES_PASSWORD=orcid -v `pwd`/orcid:/opt/initdb -v orcid_data:/var/lib/postgresql/9.5/main -d postgres:9.5
-    docker exec -it orcid-postgres psql -U postgres -f /opt/initdb/orcid_dump.sql
+    docker run --name orcid-postgres -e POSTGRES_PASSWORD=orcid -v $(pwd)/orcid/initdb:/docker-entrypoint-initdb.d -v orcid_data:/var/lib/postgresql/9.5/main -d postgres:9.5
 
+> Every sql files at/orcid/initdb/* is going to be run `psql -U postgres -f /opt/initdb/orcid_dump.sql`
 > Download orcid_dump.sql from any sandbox machine
 
 ## Create orcid-web source ready container
@@ -53,10 +53,14 @@ Generate NG orcid js
     cd orcid-nodejs
     mvn -P ci -Dnodejs.workingDirectory=${HOME}/git/ORCID-Source/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean install package
 
+or
+
+    mvn -P production clean install package
+
 Package as war file all together
 
     cd ~/git/ORCID-Source/orcid-web
-    mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
+    mvn clean install -Dmaven.test.skip=true -Dlicense.skip=true
     cp ~/git/ORCID-Source/orcid-web/target/orcid-web.war ~/git/orcid-docker/orcid/
 
 Ready to build our custom orcid-web container
@@ -66,7 +70,7 @@ Ready to build our custom orcid-web container
 
 If new container is available at `docker images` then we're ready to run orcid-web
 
-    docker run --name orcid-web --rm --link orcid-postgres:db.orcid.org -d orcid/web
+    docker run --name orcid-web --rm -v `pwd`/orcid:/orcid --link orcid-postgres:db.orcid.org -d orcid/web
 
 watch the app startup with
 
@@ -92,7 +96,7 @@ Create nginx machine from orcid deb packages
 
     docker build --rm -t orcid/nginx -f nginx/Dockerfile .
 
-    docker run --name orcid-proxy --rm -p 8080:80 -p 8443:443 -v shib_disk:/opt/shib_sp -v `pwd`/orcid:/orcid --link orcid-web:tomcat.orcid.org -e REGISTRY_IP_PORT=tomcat.orcid.org:8080 -d orcid/nginx
+    docker run --name orcid-proxy --rm -p 8443:443 -p 8080:80 -v shib_disk:/opt/shib_sp -v `pwd`/orcid:/orcid --link orcid-web:dev.orcid.org -e REGISTRY_IP_PORT=172.17.0.3:8080 -d orcid/nginx
 
 ## Test web app
 
@@ -125,7 +129,7 @@ You can login with
 
 ## Control orcid-web with docker compose
 
-First ensure values in _.env_ files is correct, adjust when needed
+First ensure values in _.env_ file is correct, adjust when needed
 
     cat .env
 

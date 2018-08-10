@@ -6,16 +6,12 @@ ENV LANG en_US.utf8
 
 ENV TOMCAT_HOME /usr/local/tomcat
 
-RUN mkdir -p $TOMCAT_HOME/data/solr
+COPY orcid/tomcat_up.sh /usr/bin/reconfigure.sh
 
-COPY orcid/*.war $TOMCAT_HOME/webapps/
+RUN chmod +x /usr/bin/reconfigure.sh
 
-COPY orcid/server.min.xml $TOMCAT_HOME/conf/server.xml
+CMD ["/usr/bin/reconfigure.sh"]
 
-COPY orcid/tomcat-users.min.xml $TOMCAT_HOME/conf/tomcat-users.xml
+EXPOSE 8888
 
-COPY orcid/setenv.sh $TOMCAT_HOME/bin/
-
-COPY orcid/orcid.properties $TOMCAT_HOME/conf/
-
-RUN chmod +x $TOMCAT_HOME/bin/setenv.sh
+CMD ["catalina.sh", "run"]
