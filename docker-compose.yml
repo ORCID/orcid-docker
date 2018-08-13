@@ -8,24 +8,28 @@ services:
   db:
     image: postgres:9.5
     hostname: dev-db.orcid.org
+    networks:
+      default:
     volumes:
       - ./tomcat/initdb:/docker-entrypoint-initdb.d
       - orcid_data:/var/lib/postgresql/9.5/main
     environment:
       - "POSTGRES_PASSWORD:${PG_PASSWORD:-orcid}"
-    expose:
+    ports:
       - "5432"
   web:
     build: tomcat
     image: orcid/webtwo
     hostname: dev.orcid.org
+    networks:
+      default:
     volumes:
       - ${ORCID_SOURCE}:/orcid_source
-      - ./:/orcid
+      - ./tomcat:/orcid
     depends_on:
       - db
-    extra_hosts:
-      - "dev-db.orcid.org:${DB_HOST_IP:-172.19.0.2}"
-    expose:
+    #extra_hosts:
+    #  - "dev-db.orcid.org:${DB_HOST_IP:-172.19.0.2}"
+    ports:
       - "${ORCID_WEB_PORT_SSL:-8443}"
       - "${ORCID_WEB_PORT:-8080}"
