@@ -3,10 +3,12 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
               version="1.0">
+  <role rolename="admin-gui"/>
+  <role rolename="admin-script"/>
   <role rolename="manager-gui"/>
   <role rolename="manager-script"/>
   <role rolename="manager-jmx"/>
   <role rolename="manager-status"/>
-  <user username="manager" password="manager" roles="manager-gui,manager-status"/>
-  <user username="maven" password="maven" roles="manager-script"/>
+  <user username="root" password="Sup3r" roles="admin-gui,manager-gui,manager-status"/>
+  <user username="maven" password="maven" roles="admin-script"/>
 </tomcat-users>

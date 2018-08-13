@@ -15,4 +15,4 @@ CMD ["/usr/bin/tomcat_up.sh"]
 
 CMD ["tomcat_up.sh"]
 
-EXPOSE 8888
+EXPOSE 8443

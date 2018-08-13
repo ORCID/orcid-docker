@@ -28,7 +28,11 @@ Follow install instructions at https://docs.docker.com/install/
 
 ## Control orcid-web with docker compose
 
-To start all services from the root folder do:
+Build and pack the orcid web war file, helper script at
+
+    sh ./tomcat/package_orcid_web.sh
+
+To start all services from the root folder do
 
     docker-compose up -d
 
@@ -40,7 +44,7 @@ We can found containers IP from container name with
 
 Test the service with
 
-    curl -I -k -L -H 'Host: dev.orcid.org' http://localhost:8443/orcid-web
+    curl -I -k -L https://localhost:8443/orcid-web/signin
 
 You can login with
 
