@@ -7,48 +7,25 @@ networks:
 services:
   db:
     image: postgres:9.5
-    domainname: orcid.org
-    hostname: db
+    hostname: dev-db.orcid.org
     volumes:
-      - "./orcid/initdb:/docker-entrypoint-initdb.d"
-      - "orcid_data:/var/lib/postgresql/9.5/main"
+      - ./tomcat/initdb:/docker-entrypoint-initdb.d
+      - orcid_data:/var/lib/postgresql/9.5/main
     environment:
-      - POSTGRES_PASSWORD
+      - "POSTGRES_PASSWORD:${PG_PASSWORD:-orcid}"
     expose:
       - "5432"
-
-  dev:
-    image: orcid/web
-    domainname: orcid.org
-    hostname: dev
+  web:
+    build: tomcat
+    image: orcid/webtwo
+    hostname: dev.orcid.org
+    volumes:
+      - ${ORCID_SOURCE}:/orcid_source
+      - ./:/orcid
     depends_on:
       - db
     extra_hosts:
-      - "db.orcid.org:${DB_HOST_IP:-172.19.0.2}"
+      - "dev-db.orcid.org:${DB_HOST_IP:-172.19.0.2}"
     expose:
-      - "8080"
-
-  web:
-    image: orcid/nginx
-    domainname: orcid.org
-    hostname: proxy
-    volumes:
-      - "shib_disk:/opt/shib_sp"
-      - "./orcid:/orcid"
-    depends_on:
-      - dev
-    extra_hosts:
-      - "dev.orcid.org:${WEB_HOST_IP:-172.19.0.3}"
-    environment:
-      - REGISTRY_IP_PORT
-    ports:
-      - target: 8080
-        published: 8443
-        protocol: tcp
-        mode: host
-      - target: 8080
-        published: 8080
-        protocol: tcp
-        mode: host
-    expose:
-      - "8443"
+      - "${ORCID_WEB_PORT_SSL:-8443}"
+      - "${ORCID_WEB_PORT:-8080}"
