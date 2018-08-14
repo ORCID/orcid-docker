@@ -22,14 +22,14 @@ Follow install instructions at https://docs.docker.com/install/
 |---------------|-----------------------|
 | ORCID_SOURCE  | /Users/jperez/git/ORCID_Source |
 | POSTGRES_PASSWORD |   orcid   |
-| 
 
 > Adjust test.env and save it as .env
 
-## Control orcid-web with docker compose
+## Startup orcid-web with docker compose
 
-Build and pack the orcid web war file, helper script at
+Build and pack the orcid web war file, helper script and config at
 
+    cp ./tomcat/test.env .env
     sh ./tomcat/package_orcid_web.sh
 
 To start all services from the root folder do
@@ -57,7 +57,7 @@ You can login with
 
 ## Manual build of containers
 
-### Setup ORCID database (snapshot from staging)
+#### Setup ORCID database
 
 Reusing [postgres library](https://docs.docker.com/samples/library/postgres/), create local volume to persist orcid data
 
@@ -70,7 +70,7 @@ Reusing [postgres library](https://docs.docker.com/samples/library/postgres/), c
 > Every sql files at/orcid/initdb/* is going to be run as `psql -U postgres -f /opt/initdb/orcid_dump.sql`
 > Download orcid_dump.sql from any sandbox machine
 
-### Create orcid-web source ready container
+#### Create orcid-web source ready container
 
 Build the base java web container
 
@@ -80,13 +80,13 @@ Build the base java web container
 Ready to build our custom orcid-web container
 
     cd ~/git/orcid-docker/tomcat
-    docker build --rm -t orcid/web .
+    docker build --rm -t orcid/web -f ./tomcat/Dockerfile .
 
 If new container is available at `docker images` then we're ready to run orcid-web
 
     docker run --name orcid-web \
     --rm -v `pwd`/orcid:/orcid \
-    --link orcid-postgres:db.orcid.org \
+    --link orcid-postgres:dev-db.orcid.org \
     -d orcid/web
 
 watch the app startup with

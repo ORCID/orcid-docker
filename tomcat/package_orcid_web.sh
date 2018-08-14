@@ -4,7 +4,7 @@ ORCID_HOSTNAME="localhost"
 ORCID_PORT="8443"
 ORCID_SOURCE="${HOME}/git/ORCID-Source"
 
-echo "https://${ORCID_HOSTNAME}:${ORCID_PORT}/static" > ${ORCID_SOURCE}/orcid-web/src/main/resources/cdn_active_url.txt
+echo "https://${ORCID_HOSTNAME}:${ORCID_PORT}/orcid-web/static" > ${ORCID_SOURCE}/orcid-web/src/main/resources/cdn_active_url.txt
 
 cd "${ORCID_SOURCE}/orcid-nodejs"
 mvn -P ci -Dnodejs.workingDirectory=${ORCID_SOURCE}/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean compile package
