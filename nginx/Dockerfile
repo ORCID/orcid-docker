@@ -26,8 +26,8 @@ RUN dpkg --force-all -i /opt/nginx-extras_1.4.6-1ubuntu4_amd64.deb
 
 COPY orcid/configure_and_serve.sh /usr/bin/orcid_up.sh
 
-RUN chmod +x /usr/bin/orcid_up.sh
+COPY nginx/supervisor_shib.conf /etc/supervisor/conf.d/shibboleth.conf
 
-EXPOSE 8080 80 443 8443
+RUN chmod +x /usr/bin/orcid_up.sh
 
 ENTRYPOINT ["/usr/bin/orcid_up.sh"]
