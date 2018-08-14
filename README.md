@@ -1,12 +1,6 @@
 # Deploy ORCID with DOCKER
 
-This project uses docker containers to startup JavaEE PostgreSQL web application.
-
-https://orcid.org/
-
-The local environment will be available at
-
-https://localhost:8443/
+This project uses docker containers to startup JavaEE PostgreSQL [web application](https://qa.orcid.org/). The local environment will be available at (https://localhost:8443/)
 
 ## Install docker community edition
 
@@ -18,27 +12,29 @@ Follow install instructions at https://docs.docker.com/install/
 
 ## Environment variables
 
-|   Env Var     |       Description     |
-|---------------|-----------------------|
+|   Env Var     |       Description              |
+|---------------|--------------------------------|
 | ORCID_SOURCE  | /Users/jperez/git/ORCID_Source |
-| POSTGRES_PASSWORD |   orcid   |
+| PG_PASSWORD   | orcid                          |
 
 > Adjust test.env and save it as .env
 
 ## Startup orcid-web with docker compose
+
+### Prepare orcid-web java web application
 
 Build and pack the orcid web war file, helper script and config at
 
     cp ./tomcat/test.env .env
     sh ./tomcat/package_orcid_web.sh
 
+### Run
+
 To start all services from the root folder do
 
     docker-compose up -d
 
-We can found containers IP from container name with
-
-    docker inspect --format '{{ (index .NetworkSettings.Networks "orcid_default").IPAddress }}' orcid_web_1
+> We can found containers IP from container name with `docker inspect --format '{{ (index .NetworkSettings.Networks "orcid_default").IPAddress }}' orcid_web_1`
 
 ### Test web app
 
@@ -55,7 +51,7 @@ You can login with
 
 > ORCID tech team knows the password phrase
 
-## Manual build of containers
+## Manual build of containers (Optional)
 
 #### Setup ORCID database
 
