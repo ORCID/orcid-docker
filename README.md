@@ -10,6 +10,9 @@ Follow install instructions at https://docs.docker.com/install/
 * [Get Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 * [Get Docker for Linux](https://download.docker.com/linux/static/stable/aarch64/docker-18.03.1-ce.tgz)
 
+## Install docker compose 
+Follow instructions for [installing docker-compose on macOS, Windows, and 64-bit Linux ](https://docs.docker.com/compose/install/)
+
 ## Environment variables
 
 |   Env Var     |       Description              |
