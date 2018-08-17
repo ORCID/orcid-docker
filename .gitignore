@@ -1,4 +1,4 @@
 .env
 .git
-tomcat/webapps
+tomcat/webapps/*.war
 tmp
