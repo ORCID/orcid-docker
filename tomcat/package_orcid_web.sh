@@ -3,6 +3,18 @@
 ORCID_HOSTNAME="localhost"
 ORCID_PORT="8443"
 ORCID_SOURCE="${HOME}/git/ORCID-Source"
+RELEASE_TAG="master"
+
+if [ $# -lt 1 ];then
+    echo "Usage:\n\t$0 release-number\ne.g.\n\t$0 release-1.2.345\n"
+    exit 1
+fi
+
+RELEASE_TAG="$1"
+
+cd "${ORCID_SOURCE}/"
+git fetch -t
+git checkout "$RELEASE_TAG"
 
 echo "https://${ORCID_HOSTNAME}:${ORCID_PORT}/orcid-web/static" > ${ORCID_SOURCE}/orcid-web/src/main/resources/cdn_active_url.txt
 
