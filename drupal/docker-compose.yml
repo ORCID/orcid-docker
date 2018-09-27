@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  db:
+    image: mysql:5.5
+    hostname: about-db.orcid.org
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+      - ./datadir:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD:${MYSQL_ROOT_PASSWORD:-ab0u7}"
+      - 
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    image: orcid/about
+    hostname: dev.orcid.org
+    volumes:
+      - ${ORCID_ABOUT}:/var/www/about_drupal
+    links:
+      - db:about-db.orcid.org
+    depends_on:
+      - db
+    ports:
+      - "9999:${ORCID_ABOUT_MEMBERS:-9999}"
+      - "8888:${ORCID_ABOUT:-8888}"

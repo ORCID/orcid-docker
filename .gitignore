@@ -1,4 +1,5 @@
 .env
 .git
 tomcat/webapps/*.war
-tmp
+drupal/drush-backups/*
+drupal/.env
