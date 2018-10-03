@@ -73,8 +73,7 @@ Reusing [postgres library](https://docs.docker.com/samples/library/postgres/), c
     -v orcid_data:/var/lib/postgresql/9.5/main \
     -d postgres:9.5
 
-> Every sql files at/orcid/initdb/* is going to be run as `psql -U postgres -f /opt/initdb/orcid_dump.sql`
-> Download orcid_dump.sql from any sandbox machine
+> Every sql files at /tomcat/initdb/* is going to be run as `psql -U postgres -f /opt/initdb/orcid_dump.sql`, Download orcid_dump.sql from any sandbox machine
 
 #### Create orcid-web source ready container
 
