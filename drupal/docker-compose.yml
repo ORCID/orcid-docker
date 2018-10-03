@@ -1,7 +1,7 @@
 version: '3.5'
 
 services:
-  db:
+  mydb:
     image: mysql:5.5
     hostname: about-db.orcid.org
     volumes:
@@ -12,7 +12,7 @@ services:
       - 
     ports:
       - "3306:3306"
-  web:
+  about:
     build: .
     image: orcid/about
     hostname: dev.orcid.org

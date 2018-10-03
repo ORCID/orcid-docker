@@ -1,7 +1,8 @@
 
 ## Simple Apache + Drupal app
 
-Build similar solution as
+
+Build similar solution as https://github.com/ORCID/about_drupal#deploy-new-code
 
     root@about-qa-4:/etc/apt/sources.list.d# mysql -V
         mysql  Ver 15.1 Distrib 5.5.59-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
@@ -19,8 +20,8 @@ Build similar solution as
 
     jperez@about-qa-4:~$ cd /var/www/about_drupal/docroot && drush archive-dump --overwrite --destination='/home/jperez/about_drupal.tgz'
         Database dump saved to /tmp/drush_tmp_1534543575_5b7746d799c32/drupal7_about.sql                                                                                                    [success]
-        Archive saved to /data_disk/home/jperez/about_drupal.tgz                                                                                                                            [ok]
-        /data_disk/home/jperez/about_drupal.tgz
+        Archive saved to /home/jperez/about_drupal.tgz                                                                                                                            [ok]
+        /home/jperez/about_drupal.tgz
     jperez@about-qa-4:~$ exit
     jperez@asusxubuntu:~/Downloads$ scp about-qa-4-loc.orcid.org:~/about_drupal.tgz .
 
