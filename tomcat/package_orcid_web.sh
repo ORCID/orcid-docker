@@ -25,3 +25,14 @@ cd "${ORCID_SOURCE}/"
 mvn clean install -Dmaven.test.skip=true -Dlicense.skip=true
 
 cp -v "${ORCID_SOURCE}/orcid-web/target/orcid-web.war" "${HOME}/git/orcid-docker/tomcat/webapps/"
+
+# install certificates and properties file
+
+cp "${HOME}/git/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-keystore.jks" \
+   "${HOME}/git/orcid-docker/tomcat/webapps/"
+cp "${HOME}/git/ORCID-Source/orcid-api-web/src/test/resources/orcid-server-truststore.jks" \
+   "${HOME}/git/orcid-docker/tomcat/webapps/"
+cp "${HOME}/git/ORCID-Source/orcid-persistence/src/main/resources/staging-persistence.properties" \
+   "${HOME}/git/orcid-docker/tomcat/webapps/orcid.properties"
+
+
