@@ -1,6 +1,6 @@
 FROM tomcat:8.0-jre8
 
-#LABEL maintainer=""
+#LABEL maintainer="Jeff P. <jeff@siccr.com>"
 MAINTAINER "Jeff P. <jeff@siccr.com>"
 
 ENV LANG en_US.utf8

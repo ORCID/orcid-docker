@@ -3,11 +3,11 @@ volumes:
   orcid_data:
 services:
   db:
-    image: postgres:9.5
+    image: postgres:10.4
     hostname: dev-db.orcid.org
     volumes:
       - ./tomcat/initdb:/docker-entrypoint-initdb.d
-      - orcid_data:/var/lib/postgresql/9.5/main
+      - orcid_data:/var/lib/postgresql/data
     environment:
       - "POSTGRES_PASSWORD:${PG_PASSWORD:-orcid}"
     ports:
