@@ -20,7 +20,7 @@ Follow instructions for [installing docker-compose on macOS, Windows, and 64-bit
 | ORCID_SOURCE  | /Users/jperez/git/ORCID_Source |
 | PG_PASSWORD   | orcid                          |
 
-> Adjust test.env and save it as .env
+> Rename test.env as .env update as needed
 
 ## Startup orcid-web with docker compose
 
