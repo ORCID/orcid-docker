@@ -15,7 +15,7 @@ CREATE ROLE orcid;
 ALTER ROLE orcid WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md56f4c19ae1996a4a6c61512aacac92445';
 CREATE ROLE orcidro;
 ALTER ROLE orcidro WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md54d77a927daa94e9b5ce745bf157268b1';
--- CREATE ROLE postgres;
+
 ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS;
 CREATE ROLE statistics;
 ALTER ROLE statistics WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md50bb9ced98effdb433e3e2fafd98932fd';
@@ -3401,6 +3401,8 @@ COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin
 
 COPY public.email (date_created, last_modified, email, orcid, visibility, is_primary, is_current, is_verified, source_id, client_source_id, email_hash, assertion_origin_source_id, assertion_origin_client_source_id) FROM stdin;
 2019-01-25 18:55:49.738+00	2019-01-25 18:55:49.738+00	orcidqatester@mailinator.com	0000-0003-4333-1363	PRIVATE	t	t	f	0000-0003-4333-1363	\N	6c2d8a8b6c7e094fd4a723df490038069f0356aeb090508d2aef187d29007b95	\N	\N
+2019-01-28 20:57:02.474+00	2019-01-28 20:57:02.474+00	orcidqatester1@mailinator.com	0000-0003-3899-7179	PRIVATE	t	t	f	0000-0003-3899-7179	\N	f970c754c080b4641ba54ce121973ac6ea1992d4709d33a39c82a618a1c16212	\N	\N
+2019-01-28 21:30:27.003+00	2019-01-28 21:30:27.003+00	orcidqatester2@mailinator.com	0000-0002-1250-8229	PRIVATE	t	t	f	0000-0002-1250-8229	\N	abcb5026c7df81b9798c6ca808219c030982936bc705360488c49bc6a8df20d2	\N	\N
 \.
 
 
@@ -3418,6 +3420,8 @@ COPY public.email_event (id, date_created, last_modified, email, email_event_typ
 
 COPY public.email_frequency (id, orcid, date_created, last_modified, send_administrative_change_notifications, send_change_notifications, send_member_update_requests, send_quarterly_tips) FROM stdin;
 2140ca12-357e-46b1-bcda-e53f37a94979	0000-0003-4333-1363	2019-01-25 18:55:49.786+00	2019-01-25 18:55:49.788+00	7	7	7	f
+bb3a32f7-fe3b-4ddd-bec4-92609f027635	0000-0003-3899-7179	2019-01-28 20:57:02.516+00	2019-01-28 20:57:02.517+00	7	7	7	f
+dc0bc056-e9e2-474a-ba99-ba1494c384eb	0000-0002-1250-8229	2019-01-28 21:30:27.015+00	2019-01-28 21:30:27.015+00	7	7	7	f
 \.
 
 
@@ -3467,6 +3471,8 @@ COPY public.given_permission_to (receiver_orcid, giver_orcid, date_created, last
 
 COPY public.granted_authority (authority, orcid, date_created, last_modified) FROM stdin;
 ROLE_USER	0000-0003-4333-1363	2019-01-25 18:55:49.737	2019-01-25 18:55:49.737
+ROLE_USER	0000-0003-3899-7179	2019-01-28 20:57:02.474	2019-01-28 20:57:02.474
+ROLE_USER	0000-0002-1250-8229	2019-01-28 21:30:27.002	2019-01-28 21:30:27.002
 \.
 
 
@@ -3622,6 +3628,7 @@ COPY public.oauth2_token_detail (token_value, token_type, token_expiration, user
 --
 
 COPY public.orcid_props (key, prop_value, date_created, last_modified) FROM stdin;
+import-wizard-cache-version	{"version":"2","createdDate":"Mon Jan 28 21:30:34 UTC 2019"}	2019-01-28 21:30:34.30859+00	2019-01-28 21:30:34.30859+00
 \.
 
 
@@ -3769,6 +3776,8 @@ COPY public.peer_review_subject (id, external_identifiers_json, title, work_type
 
 COPY public.profile (orcid, date_created, last_modified, account_expiry, account_non_locked, completed_date, claimed, creation_method, credentials_expiry, credit_name, enabled, encrypted_password, encrypted_security_answer, encrypted_verification_code, family_name, given_names, is_selectable_sponsor, send_change_notifications, send_orcid_news, biography, vocative_name, security_question_id, source_id, non_locked, biography_visibility, keywords_visibility, external_identifiers_visibility, researcher_urls_visibility, other_names_visibility, orcid_type, group_orcid, submission_date, indexing_status, names_visibility, iso2_country, profile_address_visibility, profile_deactivation_date, activities_visibility_default, last_indexed_date, locale, client_type, group_type, primary_record, deprecated_date, referred_by, enable_developer_tools, send_email_frequency_days, send_orcid_feature_announcements, send_member_update_requests, salesforce_id, client_source_id, developer_tools_enabled_date, record_locked, used_captcha_on_registration, user_last_ip, reviewed, send_administrative_change_notifications, reason_locked, reason_locked_description, hashed_orcid, secret_for_2fa, using_2fa, last_login, deprecating_admin, deprecated_method) FROM stdin;
 0000-0003-4333-1363	2019-01-25 18:55:49.531	2019-01-25 18:55:49.72	\N	t	\N	t	Direct	\N	\N	t	nElHoOpP6JRk9oqiYvS/Qht2XtmUfQh/Erne0tEsPhKk/blrwhkiJZH3jgu3BcXx75rTkXQ5mdwU598Xe7RH19P7OSIDmKSEC+zfemgx7SQ=	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	PRIVATE	PRIVATE	PRIVATE	PRIVATE	PRIVATE	USER	\N	2019-01-25 18:55:49.531+00	PENDING	PRIVATE	\N	PRIVATE	\N	PUBLIC	\N	EN	\N	\N	\N	\N	\N	f	7	\N	\N	\N	\N	\N	f	t	172.23.0.1	f	\N	\N	\N	6ba0a45892bf018872f625350f9847464021f37ba1aa543cb88c5576268b00c5	\N	f	2019-01-25 18:55:49.531	\N	\N
+0000-0003-3899-7179	2019-01-28 20:57:02.283	2019-01-28 20:57:02.467	\N	t	\N	t	Direct	\N	\N	t	X7PSyeF5PJsV0lBTMHY63ci2OyTLu/MjUHBi4od5huN13ARmzsKc5InUnW2xEIrA5ZpKoG6ASYJKJ9ClZPNkk//16aEvueUp6B6/5GikZNE=	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	PRIVATE	PRIVATE	PRIVATE	PRIVATE	PRIVATE	USER	\N	2019-01-28 20:57:02.283+00	PENDING	PRIVATE	\N	PRIVATE	\N	PUBLIC	\N	EN	\N	\N	\N	\N	\N	f	7	\N	\N	\N	\N	\N	f	t	172.29.0.1	f	\N	\N	\N	9e0c3829aa3ed981bfc54e60a2b7e2f1ceb6a310f188013bdbcceee8490b1b73	\N	f	2019-01-28 20:57:02.283	\N	\N
+0000-0002-1250-8229	2019-01-28 21:30:26.834	2019-01-28 21:30:27	\N	t	\N	t	Direct	\N	\N	t	AlhS9ClL7sV+YArSDSuVS39Mz3AivvSmlv/WSrnll0FwknS7mYgdP+OX89+bmtJq2vc/TQ4SfwhePRFoFDMTFsvUmZBujmNpHZ3IGo8ypmM=	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	PRIVATE	PRIVATE	PRIVATE	PRIVATE	PRIVATE	USER	\N	2019-01-28 21:30:26.834+00	PENDING	PRIVATE	\N	PRIVATE	\N	PUBLIC	\N	EN	\N	\N	\N	\N	\N	f	7	\N	\N	\N	\N	\N	f	t	172.29.0.1	f	\N	\N	\N	c9d130ff87618e4ca1d80d98e2cb4859180ecbec2e213038a1a9feeca3edabf4	\N	f	2019-01-28 21:30:26.834	\N	\N
 \.
 
 
@@ -3796,6 +3805,12 @@ COPY public.profile_history_event (id, date_created, last_modified, orcid, event
 1	2019-01-25 18:55:49.788+00	2019-01-25 18:55:49.788+00	0000-0003-4333-1363	email_frequency on register	send_quarterly_tips false
 2	2019-01-25 18:55:49.796+00	2019-01-25 18:55:49.796+00	0000-0003-4333-1363	Accepted T&Cs	\N
 3	2019-01-25 18:55:49.799+00	2019-01-25 18:55:49.799+00	0000-0003-4333-1363	Def vis: public	\N
+4	2019-01-28 20:57:02.518+00	2019-01-28 20:57:02.518+00	0000-0003-3899-7179	email_frequency on register	send_quarterly_tips false
+5	2019-01-28 20:57:02.528+00	2019-01-28 20:57:02.528+00	0000-0003-3899-7179	Accepted T&Cs	\N
+6	2019-01-28 20:57:02.53+00	2019-01-28 20:57:02.531+00	0000-0003-3899-7179	Def vis: public	\N
+7	2019-01-28 21:30:27.015+00	2019-01-28 21:30:27.015+00	0000-0002-1250-8229	email_frequency on register	send_quarterly_tips false
+8	2019-01-28 21:30:27.021+00	2019-01-28 21:30:27.021+00	0000-0002-1250-8229	Accepted T&Cs	\N
+9	2019-01-28 21:30:27.023+00	2019-01-28 21:30:27.023+00	0000-0002-1250-8229	Def vis: public	\N
 \.
 
 
@@ -3829,6 +3844,8 @@ COPY public.profile_subject (profile_orcid, subjects_name) FROM stdin;
 
 COPY public.record_name (id, orcid, credit_name, family_name, given_names, visibility, date_created, last_modified) FROM stdin;
 1000	0000-0003-4333-1363	\N	tester	qa	PUBLIC	2019-01-25 18:55:49.531+00	2019-01-25 18:55:49.738+00
+1001	0000-0003-3899-7179	\N	tester	qa	PUBLIC	2019-01-28 20:57:02.283+00	2019-01-28 20:57:02.474+00
+1002	0000-0002-1250-8229	\N	tester	qa	PUBLIC	2019-01-28 21:30:26.834+00	2019-01-28 21:30:27.003+00
 \.
 
 
@@ -4349,14 +4366,14 @@ SELECT pg_catalog.setval('public.profile_funding_seq', 1000, true);
 -- Name: profile_history_event_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
 --
 
-SELECT pg_catalog.setval('public.profile_history_event_seq', 3, true);
+SELECT pg_catalog.setval('public.profile_history_event_seq', 9, true);
 
 
 --
 -- Name: record_name_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
 --
 
-SELECT pg_catalog.setval('public.record_name_seq', 1000, true);
+SELECT pg_catalog.setval('public.record_name_seq', 1002, true);
 
 
 --
@@ -6343,10 +6360,143 @@ ALTER TABLE ONLY public.work
 
 
 --
+-- Name: TABLE address; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.address TO orcidro;
+
+
+--
+-- Name: TABLE affiliation; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.affiliation TO orcidro;
+
+
+--
+-- Name: TABLE org; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.org TO orcidro;
+
+
+--
+-- Name: TABLE org_affiliation_relation; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.org_affiliation_relation TO orcidro;
+
+
+--
+-- Name: TABLE ambiguous_org; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.ambiguous_org TO orcidro;
+
+
+--
+-- Name: TABLE backup_code; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.backup_code TO orcidro;
+
+
+--
 -- Name: TABLE biography; Type: ACL; Schema: public; Owner: orcid
 --
 
 GRANT SELECT ON TABLE public.biography TO orcidro;
+
+
+--
+-- Name: TABLE client_authorised_grant_type; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_authorised_grant_type TO orcidro;
+
+
+--
+-- Name: TABLE client_details; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_details TO orcidro;
+
+
+--
+-- Name: TABLE client_granted_authority; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_granted_authority TO orcidro;
+
+
+--
+-- Name: TABLE client_redirect_uri; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_redirect_uri TO orcidro;
+
+
+--
+-- Name: TABLE client_resource_id; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_resource_id TO orcidro;
+
+
+--
+-- Name: TABLE client_scope; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_scope TO orcidro;
+
+
+--
+-- Name: TABLE client_secret; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.client_secret TO orcidro;
+
+
+--
+-- Name: TABLE country_reference_data; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.country_reference_data TO orcidro;
+
+
+--
+-- Name: TABLE custom_email; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.custom_email TO orcidro;
+
+
+--
+-- Name: TABLE databasechangelog; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.databasechangelog TO orcidro;
+
+
+--
+-- Name: TABLE databasechangeloglock; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.databasechangeloglock TO orcidro;
+
+
+--
+-- Name: TABLE email; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.email TO orcidro;
+
+
+--
+-- Name: TABLE email_event; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.email_event TO orcidro;
 
 
 --
@@ -6357,6 +6507,13 @@ GRANT SELECT ON TABLE public.email_frequency TO orcidro;
 
 
 --
+-- Name: TABLE external_identifier; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.external_identifier TO orcidro;
+
+
+--
 -- Name: TABLE find_my_stuff_history; Type: ACL; Schema: public; Owner: orcid
 --
 
@@ -6364,10 +6521,73 @@ GRANT SELECT ON TABLE public.find_my_stuff_history TO orcidro;
 
 
 --
+-- Name: TABLE funding_external_identifier; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.funding_external_identifier TO orcidro;
+
+
+--
+-- Name: TABLE funding_subtype_to_index; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.funding_subtype_to_index TO orcidro;
+
+
+--
+-- Name: TABLE given_permission_to; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.given_permission_to TO orcidro;
+
+
+--
+-- Name: TABLE granted_authority; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.granted_authority TO orcidro;
+
+
+--
 -- Name: TABLE group_id_record; Type: ACL; Schema: public; Owner: orcid
 --
 
 GRANT SELECT ON TABLE public.group_id_record TO orcidro;
+
+
+--
+-- Name: TABLE identifier_type; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.identifier_type TO orcidro;
+
+
+--
+-- Name: TABLE identity_provider; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.identity_provider TO orcidro;
+
+
+--
+-- Name: TABLE identity_provider_name; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.identity_provider_name TO orcidro;
+
+
+--
+-- Name: TABLE institution; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.institution TO orcidro;
+
+
+--
+-- Name: TABLE internal_sso; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.internal_sso TO orcidro;
 
 
 --
@@ -6385,10 +6605,192 @@ GRANT SELECT ON TABLE public.member_chosen_org_disambiguated TO orcidro;
 
 
 --
+-- Name: TABLE notification; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.notification TO orcidro;
+
+
+--
+-- Name: TABLE notification_item; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.notification_item TO orcidro;
+
+
+--
+-- Name: TABLE notification_work; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.notification_work TO orcidro;
+
+
+--
+-- Name: TABLE oauth2_authoriziation_code_detail; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.oauth2_authoriziation_code_detail TO orcidro;
+
+
+--
+-- Name: TABLE oauth2_token_detail; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.oauth2_token_detail TO orcidro;
+
+
+--
+-- Name: TABLE orcid_props; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.orcid_props TO orcidro;
+
+
+--
+-- Name: TABLE orcid_social; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.orcid_social TO orcidro;
+
+
+--
+-- Name: TABLE orcidoauth2authoriziationcodedetail_authorities; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.orcidoauth2authoriziationcodedetail_authorities TO orcidro;
+
+
+--
+-- Name: TABLE orcidoauth2authoriziationcodedetail_resourceids; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.orcidoauth2authoriziationcodedetail_resourceids TO orcidro;
+
+
+--
+-- Name: TABLE orcidoauth2authoriziationcodedetail_scopes; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.orcidoauth2authoriziationcodedetail_scopes TO orcidro;
+
+
+--
+-- Name: TABLE org_disambiguated; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.org_disambiguated TO orcidro;
+
+
+--
+-- Name: TABLE org_disambiguated_external_identifier; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.org_disambiguated_external_identifier TO orcidro;
+
+
+--
+-- Name: TABLE other_name; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.other_name TO orcidro;
+
+
+--
+-- Name: TABLE patent; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.patent TO orcidro;
+
+
+--
+-- Name: TABLE patent_contributor; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.patent_contributor TO orcidro;
+
+
+--
+-- Name: TABLE patent_source; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.patent_source TO orcidro;
+
+
+--
+-- Name: TABLE peer_review; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.peer_review TO orcidro;
+
+
+--
+-- Name: TABLE peer_review_subject; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.peer_review_subject TO orcidro;
+
+
+--
+-- Name: TABLE profile; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile TO orcidro;
+
+
+--
+-- Name: TABLE profile_event; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_event TO orcidro;
+
+
+--
+-- Name: TABLE profile_funding; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_funding TO orcidro;
+
+
+--
+-- Name: TABLE profile_history_event; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_history_event TO orcidro;
+
+
+--
+-- Name: TABLE profile_keyword; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_keyword TO orcidro;
+
+
+--
+-- Name: TABLE profile_patent; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_patent TO orcidro;
+
+
+--
+-- Name: TABLE profile_subject; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.profile_subject TO orcidro;
+
+
+--
 -- Name: TABLE record_name; Type: ACL; Schema: public; Owner: orcid
 --
 
 GRANT SELECT ON TABLE public.record_name TO orcidro;
+
+
+--
+-- Name: TABLE reference_data; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.reference_data TO orcidro;
 
 
 --
@@ -6427,10 +6829,66 @@ GRANT SELECT ON TABLE public.research_resource_org TO orcidro;
 
 
 --
+-- Name: TABLE researcher_url; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.researcher_url TO orcidro;
+
+
+--
+-- Name: TABLE salesforce_connection; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.salesforce_connection TO orcidro;
+
+
+--
+-- Name: TABLE security_question; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.security_question TO orcidro;
+
+
+--
+-- Name: TABLE shibboleth_account; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.shibboleth_account TO orcidro;
+
+
+--
+-- Name: TABLE subject; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.subject TO orcidro;
+
+
+--
+-- Name: TABLE userconnection; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.userconnection TO orcidro;
+
+
+--
 -- Name: TABLE validated_public_profile; Type: ACL; Schema: public; Owner: orcid
 --
 
 GRANT SELECT ON TABLE public.validated_public_profile TO orcidro;
+
+
+--
+-- Name: TABLE webhook; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.webhook TO orcidro;
+
+
+--
+-- Name: TABLE work; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.work TO orcidro;
 
 
 --
@@ -6680,6 +7138,20 @@ CREATE INDEX statistic_values_key_id_idx ON public.statistic_values USING btree 
 
 ALTER TABLE ONLY public.statistic_values
     ADD CONSTRAINT fk9bb60ebf14b94af FOREIGN KEY (key_id) REFERENCES public.statistic_key(id);
+
+
+--
+-- Name: TABLE databasechangelog; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.databasechangelog TO orcidro;
+
+
+--
+-- Name: TABLE databasechangeloglock; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.databasechangeloglock TO orcidro;
 
 
 --
