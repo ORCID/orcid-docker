@@ -15,6 +15,7 @@ CREATE ROLE orcid;
 ALTER ROLE orcid WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md56f4c19ae1996a4a6c61512aacac92445';
 CREATE ROLE orcidro;
 ALTER ROLE orcidro WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md54d77a927daa94e9b5ce745bf157268b1';
+-- CREATE ROLE postgres;
 ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS;
 CREATE ROLE statistics;
 ALTER ROLE statistics WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'md50bb9ced98effdb433e3e2fafd98932fd';
@@ -74,6 +75,40 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: togglz; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.togglz (
+    feature_name character varying(100) NOT NULL,
+    feature_enabled integer,
+    strategy_id character varying(200),
+    strategy_params character varying(2000)
+);
+
+
+ALTER TABLE public.togglz OWNER TO orcid;
+
+--
+-- Data for Name: togglz; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.togglz (feature_name, feature_enabled, strategy_id, strategy_params) FROM stdin;
+\.
+
+
+--
+-- Name: togglz togglz_pkey; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.togglz
+    ADD CONSTRAINT togglz_pkey PRIMARY KEY (feature_name);
 
 
 --
@@ -3365,6 +3400,7 @@ COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin
 --
 
 COPY public.email (date_created, last_modified, email, orcid, visibility, is_primary, is_current, is_verified, source_id, client_source_id, email_hash, assertion_origin_source_id, assertion_origin_client_source_id) FROM stdin;
+2019-01-25 18:55:49.738+00	2019-01-25 18:55:49.738+00	orcidqatester@mailinator.com	0000-0003-4333-1363	PRIVATE	t	t	f	0000-0003-4333-1363	\N	6c2d8a8b6c7e094fd4a723df490038069f0356aeb090508d2aef187d29007b95	\N	\N
 \.
 
 
@@ -3381,6 +3417,7 @@ COPY public.email_event (id, date_created, last_modified, email, email_event_typ
 --
 
 COPY public.email_frequency (id, orcid, date_created, last_modified, send_administrative_change_notifications, send_change_notifications, send_member_update_requests, send_quarterly_tips) FROM stdin;
+2140ca12-357e-46b1-bcda-e53f37a94979	0000-0003-4333-1363	2019-01-25 18:55:49.786+00	2019-01-25 18:55:49.788+00	7	7	7	f
 \.
 
 
@@ -3429,6 +3466,7 @@ COPY public.given_permission_to (receiver_orcid, giver_orcid, date_created, last
 --
 
 COPY public.granted_authority (authority, orcid, date_created, last_modified) FROM stdin;
+ROLE_USER	0000-0003-4333-1363	2019-01-25 18:55:49.737	2019-01-25 18:55:49.737
 \.
 
 
@@ -3730,6 +3768,7 @@ COPY public.peer_review_subject (id, external_identifiers_json, title, work_type
 --
 
 COPY public.profile (orcid, date_created, last_modified, account_expiry, account_non_locked, completed_date, claimed, creation_method, credentials_expiry, credit_name, enabled, encrypted_password, encrypted_security_answer, encrypted_verification_code, family_name, given_names, is_selectable_sponsor, send_change_notifications, send_orcid_news, biography, vocative_name, security_question_id, source_id, non_locked, biography_visibility, keywords_visibility, external_identifiers_visibility, researcher_urls_visibility, other_names_visibility, orcid_type, group_orcid, submission_date, indexing_status, names_visibility, iso2_country, profile_address_visibility, profile_deactivation_date, activities_visibility_default, last_indexed_date, locale, client_type, group_type, primary_record, deprecated_date, referred_by, enable_developer_tools, send_email_frequency_days, send_orcid_feature_announcements, send_member_update_requests, salesforce_id, client_source_id, developer_tools_enabled_date, record_locked, used_captcha_on_registration, user_last_ip, reviewed, send_administrative_change_notifications, reason_locked, reason_locked_description, hashed_orcid, secret_for_2fa, using_2fa, last_login, deprecating_admin, deprecated_method) FROM stdin;
+0000-0003-4333-1363	2019-01-25 18:55:49.531	2019-01-25 18:55:49.72	\N	t	\N	t	Direct	\N	\N	t	nElHoOpP6JRk9oqiYvS/Qht2XtmUfQh/Erne0tEsPhKk/blrwhkiJZH3jgu3BcXx75rTkXQ5mdwU598Xe7RH19P7OSIDmKSEC+zfemgx7SQ=	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	t	PRIVATE	PRIVATE	PRIVATE	PRIVATE	PRIVATE	USER	\N	2019-01-25 18:55:49.531+00	PENDING	PRIVATE	\N	PRIVATE	\N	PUBLIC	\N	EN	\N	\N	\N	\N	\N	f	7	\N	\N	\N	\N	\N	f	t	172.23.0.1	f	\N	\N	\N	6ba0a45892bf018872f625350f9847464021f37ba1aa543cb88c5576268b00c5	\N	f	2019-01-25 18:55:49.531	\N	\N
 \.
 
 
@@ -3754,6 +3793,9 @@ COPY public.profile_funding (id, org_id, orcid, title, type, currency_code, tran
 --
 
 COPY public.profile_history_event (id, date_created, last_modified, orcid, event_type, comment) FROM stdin;
+1	2019-01-25 18:55:49.788+00	2019-01-25 18:55:49.788+00	0000-0003-4333-1363	email_frequency on register	send_quarterly_tips false
+2	2019-01-25 18:55:49.796+00	2019-01-25 18:55:49.796+00	0000-0003-4333-1363	Accepted T&Cs	\N
+3	2019-01-25 18:55:49.799+00	2019-01-25 18:55:49.799+00	0000-0003-4333-1363	Def vis: public	\N
 \.
 
 
@@ -3786,6 +3828,7 @@ COPY public.profile_subject (profile_orcid, subjects_name) FROM stdin;
 --
 
 COPY public.record_name (id, orcid, credit_name, family_name, given_names, visibility, date_created, last_modified) FROM stdin;
+1000	0000-0003-4333-1363	\N	tester	qa	PUBLIC	2019-01-25 18:55:49.531+00	2019-01-25 18:55:49.738+00
 \.
 
 
@@ -4306,14 +4349,14 @@ SELECT pg_catalog.setval('public.profile_funding_seq', 1000, true);
 -- Name: profile_history_event_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
 --
 
-SELECT pg_catalog.setval('public.profile_history_event_seq', 1, false);
+SELECT pg_catalog.setval('public.profile_history_event_seq', 3, true);
 
 
 --
 -- Name: record_name_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
 --
 
-SELECT pg_catalog.setval('public.record_name_seq', 1000, false);
+SELECT pg_catalog.setval('public.record_name_seq', 1000, true);
 
 
 --
@@ -6436,6 +6479,223 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.databasechangelog (
+    id character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    dateexecuted timestamp without time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20)
+);
+
+
+ALTER TABLE public.databasechangelog OWNER TO orcid;
+
+--
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.databasechangeloglock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp without time zone,
+    lockedby character varying(255)
+);
+
+
+ALTER TABLE public.databasechangeloglock OWNER TO orcid;
+
+--
+-- Name: key_seq; Type: SEQUENCE; Schema: public; Owner: orcid
+--
+
+CREATE SEQUENCE public.key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.key_seq OWNER TO orcid;
+
+--
+-- Name: statistic_key; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.statistic_key (
+    id bigint NOT NULL,
+    generation_date timestamp with time zone
+);
+
+
+ALTER TABLE public.statistic_key OWNER TO orcid;
+
+--
+-- Name: statistic_values; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.statistic_values (
+    id bigint NOT NULL,
+    key_id bigint NOT NULL,
+    statistic_name character varying(255),
+    statistic_value bigint
+);
+
+
+ALTER TABLE public.statistic_values OWNER TO orcid;
+
+--
+-- Name: values_seq; Type: SEQUENCE; Schema: public; Owner: orcid
+--
+
+CREATE SEQUENCE public.values_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.values_seq OWNER TO orcid;
+
+--
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase) FROM stdin;
+BASE-INSTALL	Angel Montenegro	/db/statistics/install.xml	2017-01-17 22:40:59.370026	1	EXECUTED	7:31ed461caac4f0930d966d39e6786fc0	createTable (x2), addForeignKeyConstraint		\N	3.2.0
+CREATE-SEQUENCES	Angel Montenegro	/db/statistics/install.xml	2017-01-17 22:40:59.376265	2	EXECUTED	7:a34c3ac825d40c283fef31cc0b7b372a	createSequence (x2)		\N	3.2.0
+add_statistic_values_key_id_index	rcpeters	/db/statistics/add_statistic_values_key_id_index.xml	2017-01-17 22:40:59.378624	3	EXECUTED	7:0ab195e5e4b45d245273785117f735de	sql		\N	3.2.0
+GRANT-PERMISSIONS	Angel Montenegro	/db/statistics/grant_read_permissions_to_orcidro.xml	2017-03-29 19:03:18.660686	4	EXECUTED	7:7fe2b129853e90b6d97569431cec27bc	sql (x3)		\N	3.2.0
+\.
+
+
+--
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
+1	f	\N	\N
+\.
+
+
+--
+-- Data for Name: statistic_key; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.statistic_key (id, generation_date) FROM stdin;
+1	2017-11-30 22:55:01.135+00
+\.
+
+
+--
+-- Data for Name: statistic_values; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.statistic_values (id, key_id, statistic_name, statistic_value) FROM stdin;
+1	1	idsWithVerifiedEmail	4
+2	1	funding	3
+3	1	works	3
+4	1	education	6
+5	1	employmentUniqueOrg	1
+6	1	peerReview	0
+7	1	idsWithEducation	5
+8	1	employment	3
+9	1	idsWithPersonId	10
+10	1	uniqueDois	1
+11	1	educationUniqueOrg	4
+12	1	idsWithWorks	3
+13	1	liveIds	13
+14	1	idsWithPeerReview	0
+15	1	idsWithExternalId	10
+16	1	personId	13
+17	1	fundingUniqueOrg	1
+18	1	idsWithEmployment	3
+19	1	idsWithFunding	3
+\.
+
+
+--
+-- Name: key_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
+--
+
+SELECT pg_catalog.setval('public.key_seq', 1, true);
+
+
+--
+-- Name: values_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
+--
+
+SELECT pg_catalog.setval('public.values_seq', 19, true);
+
+
+--
+-- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.databasechangeloglock
+    ADD CONSTRAINT pk_databasechangeloglock PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_key statistic_key_pkey; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_key
+    ADD CONSTRAINT statistic_key_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_values statistic_values_pkey; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_values
+    ADD CONSTRAINT statistic_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_values_key_id_idx; Type: INDEX; Schema: public; Owner: orcid
+--
+
+CREATE INDEX statistic_values_key_id_idx ON public.statistic_values USING btree (key_id);
+
+
+--
+-- Name: statistic_values fk9bb60ebf14b94af; Type: FK CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_values
+    ADD CONSTRAINT fk9bb60ebf14b94af FOREIGN KEY (key_id) REFERENCES public.statistic_key(id);
+
+
+--
+-- Name: TABLE statistic_key; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.statistic_key TO orcidro;
+
+
+--
+-- Name: TABLE statistic_values; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.statistic_values TO orcidro;
+
+
 --
 -- PostgreSQL database dump complete
 --
@@ -6473,6 +6733,223 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.databasechangelog (
+    id character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    dateexecuted timestamp without time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20)
+);
+
+
+ALTER TABLE public.databasechangelog OWNER TO orcid;
+
+--
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.databasechangeloglock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp without time zone,
+    lockedby character varying(255)
+);
+
+
+ALTER TABLE public.databasechangeloglock OWNER TO orcid;
+
+--
+-- Name: key_seq; Type: SEQUENCE; Schema: public; Owner: orcid
+--
+
+CREATE SEQUENCE public.key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.key_seq OWNER TO orcid;
+
+--
+-- Name: statistic_key; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.statistic_key (
+    id bigint NOT NULL,
+    generation_date timestamp with time zone
+);
+
+
+ALTER TABLE public.statistic_key OWNER TO orcid;
+
+--
+-- Name: statistic_values; Type: TABLE; Schema: public; Owner: orcid
+--
+
+CREATE TABLE public.statistic_values (
+    id bigint NOT NULL,
+    key_id bigint NOT NULL,
+    statistic_name character varying(255),
+    statistic_value bigint
+);
+
+
+ALTER TABLE public.statistic_values OWNER TO orcid;
+
+--
+-- Name: values_seq; Type: SEQUENCE; Schema: public; Owner: orcid
+--
+
+CREATE SEQUENCE public.values_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.values_seq OWNER TO orcid;
+
+--
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase) FROM stdin;
+BASE-INSTALL	Angel Montenegro	/db/statistics/install.xml	2019-01-25 18:45:23.357087	1	EXECUTED	7:31ed461caac4f0930d966d39e6786fc0	createTable (x2), addForeignKeyConstraint		\N	3.2.0
+CREATE-SEQUENCES	Angel Montenegro	/db/statistics/install.xml	2019-01-25 18:45:23.374848	2	EXECUTED	7:a34c3ac825d40c283fef31cc0b7b372a	createSequence (x2)		\N	3.2.0
+add_statistic_values_key_id_index	rcpeters	/db/statistics/add_statistic_values_key_id_index.xml	2019-01-25 18:45:23.38855	3	EXECUTED	7:0ab195e5e4b45d245273785117f735de	sql		\N	3.2.0
+GRANT-PERMISSIONS	Angel Montenegro	/db/statistics/grant_read_permissions_to_orcidro.xml	2019-01-25 18:45:23.399881	4	EXECUTED	7:7fe2b129853e90b6d97569431cec27bc	sql (x3)		\N	3.2.0
+\.
+
+
+--
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
+1	f	\N	\N
+\.
+
+
+--
+-- Data for Name: statistic_key; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.statistic_key (id, generation_date) FROM stdin;
+1	2017-11-30 22:55:01.135+00
+\.
+
+
+--
+-- Data for Name: statistic_values; Type: TABLE DATA; Schema: public; Owner: orcid
+--
+
+COPY public.statistic_values (id, key_id, statistic_name, statistic_value) FROM stdin;
+1	1	idsWithVerifiedEmail	4
+2	1	funding	3
+3	1	works	3
+4	1	education	6
+5	1	employmentUniqueOrg	1
+6	1	peerReview	0
+7	1	idsWithEducation	5
+8	1	employment	3
+9	1	idsWithPersonId	10
+10	1	uniqueDois	1
+11	1	educationUniqueOrg	4
+12	1	idsWithWorks	3
+13	1	liveIds	13
+14	1	idsWithPeerReview	0
+15	1	idsWithExternalId	10
+16	1	personId	13
+17	1	fundingUniqueOrg	1
+18	1	idsWithEmployment	3
+19	1	idsWithFunding	3
+\.
+
+
+--
+-- Name: key_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
+--
+
+SELECT pg_catalog.setval('public.key_seq', 1, false);
+
+
+--
+-- Name: values_seq; Type: SEQUENCE SET; Schema: public; Owner: orcid
+--
+
+SELECT pg_catalog.setval('public.values_seq', 1, false);
+
+
+--
+-- Name: databasechangeloglock pk_databasechangeloglock; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.databasechangeloglock
+    ADD CONSTRAINT pk_databasechangeloglock PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_key statistic_key_pkey; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_key
+    ADD CONSTRAINT statistic_key_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_values statistic_values_pkey; Type: CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_values
+    ADD CONSTRAINT statistic_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: statistic_values_key_id_idx; Type: INDEX; Schema: public; Owner: orcid
+--
+
+CREATE INDEX statistic_values_key_id_idx ON public.statistic_values USING btree (key_id);
+
+
+--
+-- Name: statistic_values fk9bb60ebf14b94af; Type: FK CONSTRAINT; Schema: public; Owner: orcid
+--
+
+ALTER TABLE ONLY public.statistic_values
+    ADD CONSTRAINT fk9bb60ebf14b94af FOREIGN KEY (key_id) REFERENCES public.statistic_key(id);
+
+
+--
+-- Name: TABLE statistic_key; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.statistic_key TO orcidro;
+
+
+--
+-- Name: TABLE statistic_values; Type: ACL; Schema: public; Owner: orcid
+--
+
+GRANT SELECT ON TABLE public.statistic_values TO orcidro;
 
 
 --
