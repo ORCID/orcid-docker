@@ -5,6 +5,8 @@ ORCID_PORT="8443"
 ORCID_SOURCE="${HOME}/git/ORCID-Source"
 RELEASE_TAG="master"
 
+source ./tomcat/.env
+
 if [ $# -lt 1 ];then
     echo "Usage:\n\t$0 release-number\ne.g.\n\t$0 release-1.2.345\n"
     exit 1
