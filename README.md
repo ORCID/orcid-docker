@@ -13,14 +13,7 @@ Follow install instructions at https://docs.docker.com/install/
 ## Install docker compose 
 Follow instructions for [installing docker-compose on macOS, Windows, and 64-bit Linux ](https://docs.docker.com/compose/install/)
 
-## Environment variables
-
-|   Env Var     |       Description              |
-|---------------|--------------------------------|
-| ORCID_SOURCE  | /Users/jperez/git/ORCID_Source |
-| PG_PASSWORD   | orcid                          |
-
-> Rename test.env as .env update as needed
+> Validate tool is available by running `docker-compose ps`, a list of docker containers is shown.
 
 ## Startup orcid-web with docker compose
 
@@ -34,7 +27,14 @@ Follow instructions for [installing docker-compose on macOS, Windows, and 64-bit
 Build and pack the orcid web war file, helper script and config at
 
     cp ./tomcat/test.env .env
-    sh ./tomcat/package_orcid_web.sh master
+    sh ./tomcat/build.sh
+
+|   Env Var     |       Description              |
+|---------------|--------------------------------|
+| ORCID_SOURCE  | /Users/jperez/git/ORCID_Source |
+| PG_PASSWORD   | orcid                          |
+
+> Rename test.env as .env update as needed
 
 ### Run
 
@@ -60,40 +60,6 @@ Later we can stop or destroy the environment with
 
     docker-compose stop
     docker-compose down
+    docker-compose ps
 
-## Manual build of containers (Optional)
-
-#### Setup ORCID database
-
-Reusing [postgres library](https://docs.docker.com/samples/library/postgres/), create local volume to persist orcid data
-
-    docker volume create orcid_data
-    docker run --name orcid-postgres \
-    -v $(pwd)/tomcat/initdb:/docker-entrypoint-initdb.d \
-    -v orcid_data:/var/lib/postgresql/9.5/main \
-    -d postgres:9.5
-
-> Every sql files at /tomcat/initdb/* is going to be run as `psql -U postgres -f /opt/initdb/orcid_dump.sql`, Download orcid_dump.sql from any sandbox machine
-
-#### Create orcid-web source ready container
-
-Build the base java web container
-
-    cd ~/git/ORCID-Source
-    mvn clean install package -Dmaven.test.skip=true -Dlicense.skip=true
-
-Ready to build our custom orcid-web container
-
-    cd ~/git/orcid-docker/tomcat
-    docker build --rm -t orcid/web -f ./tomcat/Dockerfile .
-
-If new container is available at `docker images` then we're ready to run orcid-web
-
-    docker run --name orcid-web \
-    --rm -v `pwd`/orcid:/orcid \
-    --link orcid-postgres:dev-db.orcid.org \
-    -d orcid/web
-
-watch the app startup with
-
-    docker logs -f orcid-web
+* Read More tomcat/README.md
