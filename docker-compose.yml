@@ -23,7 +23,6 @@ services:
       - db:dev-db.orcid.org
     depends_on:
       - db
-      - src
     ports:
       - "8443:${ORCID_WEB_PORT_SSL:-8443}"
       - "8080:${ORCID_WEB_PORT:-8080}"
