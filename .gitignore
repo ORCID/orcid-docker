@@ -1,5 +1,5 @@
 .env
 .git
-tomcat/webapps/*.war
+tomcat/webapps/*
 drupal/drush-backups/*
 drupal/.env
