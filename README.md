@@ -4,13 +4,14 @@ This project uses docker containers to startup JavaEE PostgreSQL [web applicatio
 
 ## Install docker community edition
 
-Follow install instructions at https://docs.docker.com/install/
+Follow install instructions at [Docker](https://docs.docker.com/install/)
 
 * [Get Docker for Mac](https://download.docker.com/mac/stable/Docker.dmg)
 * [Get Docker for Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 * [Get Docker for Linux](https://download.docker.com/linux/static/stable/aarch64/docker-18.03.1-ce.tgz)
 
 ## Install docker compose 
+
 Follow instructions for [installing docker-compose on macOS, Windows, and 64-bit Linux ](https://docs.docker.com/compose/install/)
 
 > Validate tool is available by running `docker-compose ps`, a list of docker containers is shown.
