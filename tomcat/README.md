@@ -4,7 +4,7 @@
 
     cd ~/git/orcid-docker
     source .env
-    docker run --interactive --rm --workdir /home/orcidsource/orcid-nodejs -v ${ORCID_SOURCE}:/home/orcidsource -v $HOME/.m2:/root/.m2 maven:3-jdk-8mvn -P ci -Dnodejs.workingDirectory=/home/orcidsource/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean compile package
+    docker run --interactive --rm --workdir /home/orcidsource/orcid-nodejs -v ${ORCID_SOURCE}:/home/orcidsource -v $HOME/.m2:/root/.m2 maven:3-jdk-8 mvn -P ci -Dnodejs.workingDirectory=/home/orcidsource/orcid-web/src/main/webapp/static/javascript/ng1Orcid clean compile package
     docker run --interactive --rm --workdir /home/orcidsource -v ${ORCID_SOURCE}:/home/orcidsource -v $HOME/.m2:/root/.m2 maven:3-jdk-8 echo "https://${ORCID_HOSTNAME}:${ORCID_PORT}/orcid-web/static" > /home/orcidsource/orcid-web/src/main/resources/cdn_active_url.txt &&  mvn clean install -Dmaven.test.skip=true -Dlicense.skip=true
     cp -v "${ORCID_SOURCE}/orcid-web/target/orcid-web.war" tomcat/webapps/
     cp -v "${ORCID_SOURCE}/orcid-api-web/src/test/resources/orcid-server-keystore.jks" tomcat/webapps/
